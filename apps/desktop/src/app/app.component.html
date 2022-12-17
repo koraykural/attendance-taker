@@ -1,0 +1,5 @@
+<ng-container *ngIf="code">
+  <qrcode [qrdata]="code" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+  <p>Code: {{ code }}</p>
+</ng-container>
+<router-outlet></router-outlet>
