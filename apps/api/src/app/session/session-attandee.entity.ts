@@ -17,11 +17,15 @@ export class SessionAttandee extends BaseEntity {
   @PrimaryColumn()
   userId: string;
 
-  @ManyToOne(() => User, (user) => user.id, { cascade: true, eager: true })
+  @ManyToOne(() => User, (user) => user.id, { cascade: true, eager: true, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })
   user: Promise<User>;
 
-  @ManyToOne(() => Session, (session) => session.id, { cascade: true, eager: true })
+  @ManyToOne(() => Session, (session) => session.id, {
+    cascade: true,
+    eager: true,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'sessionId' })
   session: Promise<Session>;
 

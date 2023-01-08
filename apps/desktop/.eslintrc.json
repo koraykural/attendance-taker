@@ -9,22 +9,7 @@
         "plugin:@angular-eslint/template/process-inline-templates"
       ],
       "rules": {
-        "@angular-eslint/directive-selector": [
-          "error",
-          {
-            "type": "attribute",
-            "prefix": "attandanceChecker",
-            "style": "camelCase"
-          }
-        ],
-        "@angular-eslint/component-selector": [
-          "error",
-          {
-            "type": "element",
-            "prefix": "attandance-checker",
-            "style": "kebab-case"
-          }
-        ]
+        "@angular-eslint/component-class-suffix": "off"
       }
     },
     {

@@ -1,3 +1,4 @@
+import { AuthController } from '@api/app/auth/auth.controller';
 import { AuthService } from '@api/app/auth/auth.service';
 import { JwtAuthGuard } from '@api/app/auth/jwt-auth.guard';
 import { JwtStrategy } from '@api/app/auth/jwt.strategy';
@@ -14,7 +15,7 @@ import { PassportModule } from '@nestjs/passport';
     PassportModule,
     JwtModule.register({ secret: 'JWT_SECRET' }), // TODO:
   ],
-  controllers: [],
+  controllers: [AuthController],
   providers: [
     AuthService,
     LocalStrategy,

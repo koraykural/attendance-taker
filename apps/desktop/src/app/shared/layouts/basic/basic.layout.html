@@ -1,0 +1,15 @@
+<div class="h-full flex flex-col">
+  <div class="block">
+    <mat-toolbar color="primary">
+      <span>Attandance Checker</span>
+      <span style="flex: 1 1 auto"></span>
+      <div>
+        <a routerLink="/login" mat-flat-button class="mx-4">Login</a>
+        <a routerLink="/register" mat-flat-button>Register</a>
+      </div>
+    </mat-toolbar>
+  </div>
+  <div class="bg-gray-50 h-full">
+    <router-outlet></router-outlet>
+  </div>
+</div>

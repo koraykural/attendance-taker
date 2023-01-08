@@ -2,6 +2,7 @@ import { AuthService } from '@api/app/auth/auth.service';
 import { CurrentUser } from '@api/app/auth/current-user.decorator';
 import { SkipAuth } from '@api/app/auth/skip-auth';
 import { User } from '@api/app/user/user.entity';
+import { RegisterDto } from '@interfaces/auth';
 import { Body, Controller, Inject, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -18,9 +19,7 @@ export class AuthController {
   }
 
   @Post('register')
-  async register(
-    @Body() body: Pick<User, 'email' | 'firstName' | 'lastName'> & { password: string }
-  ) {
+  async register(@Body() body: RegisterDto) {
     const user = await this.authService.register(body);
     return this.authService.login(user);
   }

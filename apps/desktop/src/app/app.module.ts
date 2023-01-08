@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
+import { QRCodeModule } from 'angularx-qrcode';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
 import { AppComponent } from './app.component';
-import { NxWelcomeComponent } from './nx-welcome.component';
-import { RouterModule } from '@angular/router';
 import { appRoutes } from './app.routes';
-import { QRCodeModule } from 'angularx-qrcode';
-import { HttpClientModule } from '@angular/common/http';
-import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { AuthModule } from './auth/auth.module';
+import { SharedModule } from './shared/shared.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 const config: SocketIoConfig = {
   url: 'http://localhost:3333',
@@ -15,13 +15,14 @@ const config: SocketIoConfig = {
 };
 
 @NgModule({
-  declarations: [AppComponent, NxWelcomeComponent],
+  declarations: [AppComponent],
   imports: [
-    BrowserModule,
     RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
     QRCodeModule,
-    HttpClientModule,
     SocketIoModule.forRoot(config),
+    SharedModule,
+    DashboardModule,
+    AuthModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

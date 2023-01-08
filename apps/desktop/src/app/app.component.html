@@ -1,5 +1,17 @@
-<ng-container *ngIf="code">
-  <qrcode [qrdata]="code" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
-  <p>Code: {{ code }}</p>
-</ng-container>
+<!-- <dashboard-layout>
+  <button toolbar>Hello</button>
+  <desktop-dashboard></desktop-dashboard>
+  <ng-container *ngIf="code">
+    <qrcode [qrdata]="code" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+    <p>Code: {{ code }}</p>
+  </ng-container>
+</dashboard-layout> -->
+
+<!-- <basic-layout>
+  <div toolbar>
+    <button mat-flat-button>Login</button>
+    <button mat-flat-button>REGISTER</button>
+  </div>
+  <desktop-register></desktop-register>
+</basic-layout> -->
 <router-outlet></router-outlet>

@@ -4,6 +4,7 @@ import { UserService } from '@api/app/user/user.service';
 import { User } from '@api/app/user/user.entity';
 import { compare, hash } from '@api/app/auth/password-utils';
 import { PostgresError } from 'pg-error-enum';
+import { RegisterDto } from '@interfaces/auth';
 
 @Injectable()
 export class AuthService {
@@ -15,7 +16,7 @@ export class AuthService {
   async validateUser(email: string, password: string): Promise<Omit<User, 'passwordHash'> | null> {
     const user = await this.userService.findByEmail(email);
     if (user && compare(password, user.passwordHash)) {
-      user;
+      return user;
     }
     return null;
   }
@@ -27,7 +28,7 @@ export class AuthService {
     };
   }
 
-  async register(params: { email: string; password: string; firstName: string; lastName: string }) {
+  async register(params: RegisterDto) {
     try {
       const { email, password, firstName, lastName } = params;
       const passwordHash = hash(password);

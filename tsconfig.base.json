@@ -3,19 +3,22 @@
   "compilerOptions": {
     "rootDir": ".",
     "sourceMap": true,
+    "strictPropertyInitialization": false,
     "declaration": false,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "es2015",
-    "module": "esnext",
+    "module": "commonjs",
     "lib": ["es2017", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@api/*": ["apps/api/src/*"]
+      "@api/*": ["apps/api/src/*"],
+      "@interfaces/*": ["libs/shared/interfaces/src/*"],
+      "@utils": ["libs/shared/utils/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
