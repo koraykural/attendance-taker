@@ -1,7 +1,5 @@
-import {
-  OrganizationUser,
-  OrganizationUserRole,
-} from '@api/app/organization/organization-user.entity';
+import { OrganizationUser } from '@api/app/organization/organization-user.entity';
+import { OrganizationUserRole } from '@interfaces/organization';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

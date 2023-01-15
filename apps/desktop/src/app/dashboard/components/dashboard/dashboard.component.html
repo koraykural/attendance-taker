@@ -1,28 +1,30 @@
 <div class="grid-container">
-  <mat-grid-list cols="2" rowHeight="350px">
-    <mat-grid-tile *ngFor="let card of cards | async" [colspan]="card.cols" [rowspan]="card.rows">
-      <mat-card class="dashboard-card">
-        <mat-card-header>
-          <mat-card-title>
-            {{ card.title }}
-            <button
-              mat-icon-button
-              class="more-button"
-              [matMenuTriggerFor]="menu"
-              aria-label="Toggle menu"
-            >
-              <mat-icon>more_vert</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu" xPosition="before">
-              <button mat-menu-item>Expand</button>
-              <button mat-menu-item>Remove</button>
-            </mat-menu>
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content class="dashboard-card-content">
-          <div>Card Content Here</div>
-        </mat-card-content>
-      </mat-card>
-    </mat-grid-tile>
-  </mat-grid-list>
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let org of organizationList$ | async" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title> {{ org.organization.name }} </mat-panel-title>
+        <mat-panel-description *ngIf="org.myRole !== 'Owner'">
+          Joined {{ org.joinedAt | date }}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <ng-template matExpansionPanelContent>
+        <desktop-organization-details
+          [organizationId]="org.organization.id"
+        ></desktop-organization-details>
+      </ng-template>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel *ngIf="(ownsAnOrganization$ | async) === false" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <span class="w-full text-center">Create your own organization</span>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <ng-template matExpansionPanelContent>
+        <div class="mt-4">
+          <desktop-create-organization> </desktop-create-organization>
+        </div>
+      </ng-template>
+    </mat-expansion-panel>
+  </mat-accordion>
 </div>

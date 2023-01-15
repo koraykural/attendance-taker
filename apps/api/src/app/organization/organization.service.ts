@@ -1,15 +1,18 @@
+import { OrganizationUser } from '@api/app/organization/organization-user.entity';
 import {
-  OrganizationUser,
+  CreateOrganizationDto,
+  ChangeUserRolesDto,
+  AddMembersDto,
   OrganizationUserRole,
-} from '@api/app/organization/organization-user.entity';
-import { CreateOrganizationDto, ChangeUserRolesDto, AddMembersDto } from '@interfaces/organization';
+  RoleOrderMap,
+} from '@interfaces/organization';
 import { OrganizationUserFactory } from '@api/app/organization/organization-user.factory';
 import { Organization } from '@api/app/organization/organization.entity';
 import { User } from '@api/app/user/user.entity';
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
-import { pick, union } from 'lodash';
+import { pick, sortBy, union } from 'lodash';
 
 @Injectable()
 export class OrganizationService {
@@ -22,6 +25,7 @@ export class OrganizationService {
 
   async createOrganization(user: User, createOrganizationDto: CreateOrganizationDto) {
     await this.assertIsNotAnOrganizationOwner(user);
+    await this.assertOrganizationNameIsUnique(createOrganizationDto.name);
     const organization = new Organization();
     Object.assign(organization, createOrganizationDto);
     await organization.save();
@@ -39,13 +43,14 @@ export class OrganizationService {
       where: { userId: user.id },
       relations: ['organization'],
     });
-    return Promise.all(
+    const list = await Promise.all(
       orgUsers.map(async (orgUser) => ({
         organization: await orgUser.organization,
         myRole: orgUser.role,
         joinedAt: orgUser.createdAt,
       }))
     );
+    return sortBy(list, (org) => RoleOrderMap[org.myRole]);
   }
 
   async addMembers(organization: Organization, addMembersDto: AddMembersDto) {
@@ -107,7 +112,16 @@ export class OrganizationService {
       where: { userId: user.id, role: OrganizationUserRole.Owner },
     });
     if (isAnOrganizationOwner) {
-      throw new BadRequestException('You already own an organization');
+      throw new BadRequestException('You already own an organization.');
+    }
+  }
+
+  private async assertOrganizationNameIsUnique(name: string) {
+    const notUnique = await this.organizationRepository.exist({
+      where: { name },
+    });
+    if (notUnique) {
+      throw new BadRequestException('An organization with this name already exists.');
     }
   }
 }

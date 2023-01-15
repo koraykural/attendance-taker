@@ -1,12 +1,20 @@
 import { CurrentUser } from '@api/app/auth/current-user.decorator';
-import { AddMembersDto, ChangeUserRolesDto, CreateOrganizationDto } from '@interfaces/organization';
-import { OrganizationUserRole } from '@api/app/organization/organization-user.entity';
+import {
+  AddMembersDto,
+  ChangeUserRolesDto,
+  CreateOrganizationDto,
+  OrganizationDetailsResponse,
+  OrganizationUserRole,
+  RoleOrderMap,
+} from '@interfaces/organization';
 import { IsOrganizationUser } from '@api/app/organization/guard/organization-user.guard';
 import { Organization } from '@api/app/organization/organization.entity';
 import { CurrentOrg, OrganizationGuard } from '@api/app/organization/guard/organization.guard';
 import { OrganizationService } from '@api/app/organization/organization.service';
 import { User } from '@api/app/user/user.entity';
 import { Body, Controller, Get, Inject, Post, UseGuards } from '@nestjs/common';
+import { pick, sortBy } from 'lodash';
+import { OrganizationUser } from '@api/app/organization/organization-user.entity';
 
 @Controller('organization')
 export class OrganizationController {
@@ -28,8 +36,32 @@ export class OrganizationController {
 
   @Get(':id')
   @UseGuards(OrganizationGuard)
-  getOrganization(@CurrentOrg() organization: Organization) {
-    return organization;
+  @IsOrganizationUser()
+  async getOrganization(
+    @CurrentUser() user: User,
+    @CurrentOrg() organization: Organization
+  ): Promise<OrganizationDetailsResponse> {
+    const orgUsers = await organization.users;
+    const currentOrganizationUser = orgUsers.find(
+      (orgUser) => orgUser.userId === user.id
+    ) as OrganizationUser;
+    const users = await Promise.all(
+      orgUsers.map(async (orgUser) => {
+        const user = await orgUser.user;
+        return {
+          id: user.id,
+          email: user.email,
+          fullName: `${user.firstName} ${user.lastName}`,
+          joinedAt: orgUser.createdAt,
+          role: orgUser.role,
+        };
+      })
+    );
+    return {
+      ...pick(organization, ['id', 'name', 'createdAt']),
+      myRole: currentOrganizationUser.role,
+      users: sortBy(users, (user) => RoleOrderMap[user.role]),
+    };
   }
 
   @Post(':id/add-members')

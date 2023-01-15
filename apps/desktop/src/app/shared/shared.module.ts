@@ -12,6 +12,11 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTableModule } from '@angular/material/table';
+import { MatTooltipModule, MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material/tooltip';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
@@ -36,6 +41,11 @@ const sharedModules = [
   MatInputModule,
   MatSelectModule,
   MatRadioModule,
+  MatExpansionModule,
+  MatSnackBarModule,
+  MatTableModule,
+  MatTooltipModule,
+  MatAutocompleteModule,
   ReactiveFormsModule,
   BrowserModule,
   HttpClientModule,
@@ -45,5 +55,15 @@ const sharedModules = [
   declarations: [BasicLayout, DashboardLayout],
   imports: sharedModules,
   exports: sharedModules,
+  providers: [
+    {
+      provide: MAT_TOOLTIP_DEFAULT_OPTIONS,
+      useValue: {
+        showDelay: 500,
+        hideDelay: 100,
+        touchendHideDelay: 1500,
+      },
+    },
+  ],
 })
 export class SharedModule {}

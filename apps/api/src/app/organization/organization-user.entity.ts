@@ -1,5 +1,6 @@
 import { Organization } from '@api/app/organization/organization.entity';
 import { User } from '@api/app/user/user.entity';
+import { OrganizationUserRole } from '@interfaces/organization';
 import {
   BaseEntity,
   Column,
@@ -9,12 +10,6 @@ import {
   ManyToOne,
   PrimaryColumn,
 } from 'typeorm';
-
-export enum OrganizationUserRole {
-  Owner = 'Owner',
-  Admin = 'Admin',
-  Member = 'Member',
-}
 
 @Entity('organization_users')
 export class OrganizationUser extends BaseEntity {

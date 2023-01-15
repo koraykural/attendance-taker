@@ -1,33 +1,18 @@
 import { Component } from '@angular/core';
 import { map } from 'rxjs/operators';
-import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
+import { OrganizationService } from '../../organization.service';
+import { OrganizationUserRole } from '@interfaces/organization';
 
 @Component({
   selector: 'desktop-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent {
-  /** Based on the screen size, switch from standard to one column per row */
-  cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
-    map(({ matches }) => {
-      if (matches) {
-        return [
-          { title: 'Card 1', cols: 1, rows: 1 },
-          { title: 'Card 2', cols: 1, rows: 1 },
-          { title: 'Card 3', cols: 1, rows: 1 },
-          { title: 'Card 4', cols: 1, rows: 1 }
-        ];
-      }
-
-      return [
-        { title: 'Card 1', cols: 2, rows: 1 },
-        { title: 'Card 2', cols: 1, rows: 1 },
-        { title: 'Card 3', cols: 1, rows: 2 },
-        { title: 'Card 4', cols: 1, rows: 1 }
-      ];
-    })
+  organizationList$ = this.organizationService.organizationList$;
+  ownsAnOrganization$ = this.organizationService.organizationList$.pipe(
+    map((orgs) => orgs.some((org) => org.myRole === OrganizationUserRole.Owner))
   );
 
-  constructor(private breakpointObserver: BreakpointObserver) {}
+  constructor(private organizationService: OrganizationService) {}
 }

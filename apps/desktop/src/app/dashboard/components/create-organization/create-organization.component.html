@@ -1,0 +1,6 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <mat-form-field>
+    <input matInput type="text" placeholder="Organization Name" formControlName="name" />
+  </mat-form-field>
+  <button mat-raised-button color="primary" class="ml-4" type="submit">CREATE ORGANIZATION</button>
+</form>

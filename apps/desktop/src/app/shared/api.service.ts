@@ -1,5 +1,6 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
@@ -9,27 +10,27 @@ export class ApiService {
     this.baseUrl = 'http://localhost:3333/api/';
   }
 
-  get<T>(...params: Parameters<HttpClient['get']>) {
+  get<T>(...params: Parameters<HttpClient['get']>): Observable<T> {
     params[0] = this.baseUrl + params[0];
     return this.http.get<T>(...params) as any;
   }
 
-  post<T>(...params: Parameters<HttpClient['post']>) {
+  post<T>(...params: Parameters<HttpClient['post']>): Observable<T> {
     params[0] = this.baseUrl + params[0];
     return this.http.post<T>(...params);
   }
 
-  put<T>(...params: Parameters<HttpClient['put']>) {
+  put<T>(...params: Parameters<HttpClient['put']>): Observable<T> {
     params[0] = this.baseUrl + params[0];
     return this.http.put<T>(...params);
   }
 
-  patch<T>(...params: Parameters<HttpClient['patch']>) {
+  patch<T>(...params: Parameters<HttpClient['patch']>): Observable<T> {
     params[0] = this.baseUrl + params[0];
     return this.http.patch<T>(...params);
   }
 
-  delete<T>(...params: Parameters<HttpClient['delete']>) {
+  delete<T>(...params: Parameters<HttpClient['delete']>): Observable<T> {
     params[0] = this.baseUrl + params[0];
     return this.http.delete<T>(...params);
   }
