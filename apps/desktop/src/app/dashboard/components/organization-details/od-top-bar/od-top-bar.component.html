@@ -1,0 +1,12 @@
+<div class="mt-4">
+  <button
+    *ngIf="myRole !== 'Member'"
+    mat-flat-button
+    [disabled]="$isCreatingSession | async"
+    color="primary"
+    (click)="createSession()"
+  >
+    <span *ngIf="($isCreatingSession | async) === false"> Start attendance session </span>
+    <mat-spinner *ngIf="$isCreatingSession | async" diameter="20"></mat-spinner>
+  </button>
+</div>

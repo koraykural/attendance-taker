@@ -7,7 +7,7 @@ import {
   ChangeUserRolesDto,
   AddMembersDto,
 } from '@interfaces/organization';
-import { catchError, merge, Observable, of, share, Subject, switchMap } from 'rxjs';
+import { catchError, merge, of, share, Subject, switchMap } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { SnackbarService } from '../shared/snackbar.service';
 

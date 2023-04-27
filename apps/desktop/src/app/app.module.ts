@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { QRCodeModule } from 'angularx-qrcode';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
 import { AppComponent } from './app.component';
@@ -18,7 +17,6 @@ const config: SocketIoConfig = {
   declarations: [AppComponent],
   imports: [
     RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
-    QRCodeModule,
     SocketIoModule.forRoot(config),
     SharedModule,
     DashboardModule,

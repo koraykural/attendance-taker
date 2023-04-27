@@ -1,1 +1,19 @@
-<p>session works!</p>
+<div class="grid-container h-full">
+  <div class="flex justify-center align-middle">
+    <ng-container *ngIf="sessionIdAlias$ | async; let sessionIdAlias; else: loadingIdAlias">
+      <qrcode
+        [qrdata]="sessionIdAlias"
+        [elementType]="'img'"
+        [errorCorrectionLevel]="'M'"
+        [width]="600"
+        class="mt-16"
+      ></qrcode>
+    </ng-container>
+    <ng-template #loadingIdAlias>
+      <div class="flex flex-col items-center mt-16">
+        <div>Prepareing your QR code</div>
+        <mat-spinner class="block mt-4"></mat-spinner>
+      </div>
+    </ng-template>
+  </div>
+</div>

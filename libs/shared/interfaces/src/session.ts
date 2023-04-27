@@ -9,3 +9,7 @@ export abstract class CreateSessionDto {
   @IsNotEmpty()
   organizationId: string;
 }
+
+export abstract class CreateSessionResponseDto {
+  sessionId: string;
+}

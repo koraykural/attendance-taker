@@ -34,8 +34,6 @@ export class OrganizationDetailsComponent implements OnInit {
   displayedColumns: string[] = ['fullName', 'email', 'joinedAt', 'role', 'actions'];
 
   // Add new user
-  shouldShowFooterRow$: Observable<boolean>;
-  footerColumns = ['email'];
   searchInputControl = new FormControl('');
   searchUserResult$: Observable<{ email: string; id: string }[]> =
     this.searchInputControl.valueChanges.pipe(
@@ -60,9 +58,6 @@ export class OrganizationDetailsComponent implements OnInit {
       this.organizationService.getOrganizationDetails(this.organizationId)
     ).pipe(shareReplay());
     this.users$ = this.organizationDetails$.pipe(map((details) => details.users));
-    this.shouldShowFooterRow$ = this.organizationDetails$.pipe(
-      map(({ myRole }) => myRole !== OrganizationUserRole.Member)
-    );
   }
 
   addUser(userId: any) {

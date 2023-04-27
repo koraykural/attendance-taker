@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule, MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material/tooltip';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -46,6 +47,7 @@ const sharedModules = [
   MatTableModule,
   MatTooltipModule,
   MatAutocompleteModule,
+  MatProgressSpinnerModule,
   ReactiveFormsModule,
   BrowserModule,
   HttpClientModule,

@@ -1,6 +1,6 @@
 <div class="grid-container">
-  <mat-accordion>
-    <mat-expansion-panel *ngFor="let org of organizationList$ | async" hideToggle>
+  <mat-accordion hideToggle>
+    <mat-expansion-panel *ngFor="let org of organizationList$ | async">
       <mat-expansion-panel-header>
         <mat-panel-title> {{ org.organization.name }} </mat-panel-title>
         <mat-panel-description *ngIf="org.myRole !== 'Owner'">
@@ -14,7 +14,7 @@
       </ng-template>
     </mat-expansion-panel>
 
-    <mat-expansion-panel *ngIf="(ownsAnOrganization$ | async) === false" hideToggle>
+    <mat-expansion-panel *ngIf="(ownsAnOrganization$ | async) === false">
       <mat-expansion-panel-header>
         <mat-panel-title>
           <span class="w-full text-center">Create your own organization</span>

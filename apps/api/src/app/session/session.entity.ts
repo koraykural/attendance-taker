@@ -26,11 +26,11 @@ export class Session extends BaseEntity {
   @Column({ nullable: false })
   createdById: string;
 
-  @Column({ nullable: false })
-  name: string;
-
   @ManyToOne(() => User, (u) => u.id, { eager: false, onDelete: 'CASCADE' })
   createdBy: Promise<User>;
+
+  @Column({ nullable: false })
+  name: string;
 
   @OneToMany(() => SessionAttandee, (sa) => sa.session, { eager: false })
   attandees: Promise<SessionAttandee[]>;

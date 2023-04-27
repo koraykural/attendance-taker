@@ -14,16 +14,14 @@ import { v4 as uuid } from 'uuid';
   cors: true,
   transports: ['websocket'],
 })
-export class RealTimeGateway {
+export class SessionGateway {
   @WebSocketServer()
   server: Server;
 
   @SubscribeMessage('code')
   findAll(@MessageBody() data: any): Observable<WsResponse<string>> {
     console.log(data);
-    return interval(3000).pipe(
-      map((item) => ({ event: 'code', data: uuid() }))
-    );
+    return interval(3000).pipe(map((item) => ({ event: 'code', data: uuid() })));
   }
 
   @SubscribeMessage('identity')
