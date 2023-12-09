@@ -1,15 +1,28 @@
 <div class="grid-container h-full">
   <div class="flex justify-center align-middle">
-    <ng-container *ngIf="sessionIdAlias$ | async; let sessionIdAlias; else: loadingIdAlias">
-      <qrcode
-        [qrdata]="sessionIdAlias"
-        [elementType]="'img'"
-        [errorCorrectionLevel]="'M'"
-        [width]="600"
-        class="mt-16"
-      ></qrcode>
+    <ng-container
+      *ngIf="attendanceCodeData$ | async; let attendanceCodeData; else: loadingAttendanceCodeData"
+    >
+      <ng-container
+        *ngIf="attendanceCodeData.active && attendanceCodeData.code; else inactiveSession"
+      >
+        <qrcode
+          [qrdata]="attendanceCodeData.code"
+          [elementType]="'img'"
+          [errorCorrectionLevel]="'M'"
+          [width]="600"
+          class="mt-16"
+        ></qrcode>
+      </ng-container>
     </ng-container>
-    <ng-template #loadingIdAlias>
+
+    <ng-template #inactiveSession>
+      <div class="flex flex-col items-center mt-16">
+        <div>This session is terminated</div>
+      </div>
+    </ng-template>
+
+    <ng-template #loadingAttendanceCodeData>
       <div class="flex flex-col items-center mt-16">
         <div>Prepareing your QR code</div>
         <mat-spinner class="block mt-4"></mat-spinner>

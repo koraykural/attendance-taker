@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
-import { Observable } from 'rxjs';
+import { Observable, finalize, tap } from 'rxjs';
+
+type AttendanceCodeStreamData = {
+  active: boolean;
+  code?: string;
+};
 
 @Component({
   selector: 'desktop-session',
@@ -10,13 +15,15 @@ import { Observable } from 'rxjs';
 })
 export class SessionComponent implements OnInit {
   sessionId: string;
-  sessionIdAlias$: Observable<string>;
+  attendanceCodeData$: Observable<AttendanceCodeStreamData>;
 
   constructor(private readonly activatedRoute: ActivatedRoute, private readonly socket: Socket) {}
 
   ngOnInit(): void {
     this.sessionId = this.activatedRoute.snapshot.params['sessionId'];
-    this.socket.emit('code');
-    this.sessionIdAlias$ = this.socket.fromEvent<string>('code');
+    this.socket.emit('session', { id: this.sessionId });
+    this.attendanceCodeData$ = this.socket
+      .fromEvent<AttendanceCodeStreamData>('session')
+      .pipe(tap(console.log));
   }
 }

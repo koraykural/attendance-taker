@@ -40,4 +40,14 @@ export class Session extends BaseEntity {
 
   @Column('timestamp', { nullable: true })
   endedAt: Date | null;
+
+  async terminateSession() {
+    this.endedAt = new Date();
+    await this.save();
+  }
+
+  async reopenSession() {
+    this.endedAt = null;
+    await this.save();
+  }
 }

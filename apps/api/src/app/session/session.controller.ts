@@ -5,8 +5,9 @@ import { Body, Controller, Get, Inject, Param, Post, Put, UseGuards } from '@nes
 import { SessionService } from '@api/app/session/session.service';
 import { OrganizationUserRole } from '@interfaces/organization';
 import { CreateSessionDto, CreateSessionResponseDto } from '@interfaces/session';
-import { CurrentOrg, OrganizationGuard } from '@api/app/organization/guard/organization.guard';
-import { Organization } from '@api/app/organization/organization.entity';
+import { CurrentSession, SessionGuard } from '@api/app/session/guard/session.guard';
+import { SessionOwnerGuard } from '@api/app/session/guard/session-owner.guard';
+import { Session } from '@api/app/session/session.entity';
 
 @Controller('session')
 export class SessionController {
@@ -23,20 +24,32 @@ export class SessionController {
     return { sessionId: session.id };
   }
 
-  @Put(':sessionId/end')
-  closeSession(@Param('sessionId') sessionId: string) {
-    return this.sessionService.endSession(sessionId);
+  @Put(':sessionId/terminate')
+  @UseGuards(SessionGuard, SessionOwnerGuard)
+  async terminateSession(@CurrentSession() session: Session) {
+    await this.sessionService.terminateSession(session);
+  }
+
+  @Put(':sessionId/reopen')
+  @UseGuards(SessionGuard, SessionOwnerGuard)
+  async reopenSession(@CurrentSession() session: Session) {
+    if (!session.endedAt) throw new Error('Session is already open');
+    await session.reopenSession();
+  }
+
+  @Post('attend/:attendanceCode')
+  attendSession(@CurrentUser() user: User, @Param('attendanceCode') attendanceCode: string) {
+    return this.sessionService.attendSession(attendanceCode, user);
   }
 
   @Get('organization/:organizationId')
-  @UseGuards(OrganizationGuard)
-  getOrganizationSessions(@CurrentOrg() organization: Organization) {}
-
-  @Get('my')
-  @UseGuards(OrganizationGuard)
-  getMySessions(@CurrentOrg() organization: Organization) {}
+  listMySessions(@CurrentUser() user: User, @Param('organizationId') organizationId: string) {
+    return this.sessionService.listMySessions(user, organizationId);
+  }
 
   @Get(':sessionId')
-  @UseGuards(OrganizationGuard)
-  getSession(@CurrentOrg() organization: Organization) {}
+  @UseGuards(SessionGuard, SessionOwnerGuard)
+  getSession(@CurrentSession() session: Session) {
+    return this.sessionService.getSessionDetails(session);
+  }
 }

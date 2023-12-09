@@ -17,8 +17,10 @@
     "baseUrl": ".",
     "paths": {
       "@api/*": ["apps/api/src/*"],
+      "@attandance-checker/shared/consts": ["libs/shared/consts/src/index.ts"],
       "@interfaces/*": ["libs/shared/interfaces/src/*"],
-      "@utils": ["libs/shared/utils/src/index.ts"]
+      "@utils": ["libs/shared/utils/src/index.ts"],
+      "@consts/*": ["libs/shared/consts/src/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "name": "shared-consts",
+  "projectType": "library",
+  "sourceRoot": "libs/shared/consts/src",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/shared/consts/**/*.ts"]
+      },
+      "outputs": ["{options.outputFile}"]
+    }
+  }
+}

@@ -8,6 +8,7 @@ import {
   Inject,
 } from '@nestjs/common';
 
+/** Validates organization exists. Attaches organization to the request. */
 export class OrganizationGuard implements CanActivate {
   @Inject()
   private readonly organizationService: OrganizationService;
