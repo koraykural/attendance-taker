@@ -1,0 +1,61 @@
+<table mat-table [dataSource]="users$" class="mat-elevation-z0 mt-4">
+  <ng-container matColumnDef="email">
+    <th mat-header-cell *matHeaderCellDef>Email</th>
+    <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="fullName">
+    <th mat-header-cell *matHeaderCellDef>Name</th>
+    <td mat-cell *matCellDef="let element">{{ element.fullName }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="role">
+    <th mat-header-cell *matHeaderCellDef>Role</th>
+    <td mat-cell *matCellDef="let element">{{ element.role }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="joinedAt">
+    <th mat-header-cell *matHeaderCellDef>Joined At</th>
+    <td mat-cell *matCellDef="let element">{{ element.joinedAt | date }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let element">
+      <button
+        mat-icon-button
+        *ngIf="(myRole$ | async) === 'Owner' && element.role === 'Member'"
+        (click)="promoteToAdmin(element.id)"
+        matTooltip="Promote as admin"
+      >
+        <mat-icon>arrow_circle_up</mat-icon>
+      </button>
+      <button
+        mat-icon-button
+        *ngIf="(myRole$ | async) === 'Owner' && element.role === 'Admin'"
+        (click)="demoteFromAdmin(element.id)"
+        matTooltip="Demote from admin role"
+      >
+        <mat-icon>arrow_circle_down</mat-icon>
+      </button>
+
+      <button
+        mat-icon-button
+        *ngIf="
+          ((myRole$ | async) === 'Owner' && element.role !== 'Owner') ||
+          ((myRole$ | async) === 'Admin' && element.role === 'Member')
+        "
+        color="warn"
+        (click)="removeUser(element.id)"
+        matTooltip="Remove user from organization"
+      >
+        <mat-icon>block</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+
+<desktop-od-add-member *ngIf="(myRole$ | async) !== 'Member'"></desktop-od-add-member>

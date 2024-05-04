@@ -1,0 +1,9 @@
+<button
+  mat-flat-button
+  [disabled]="$isCreatingSession | async"
+  color="primary"
+  (click)="openDialog()"
+>
+  <span *ngIf="($isCreatingSession | async) === false"> Start attendance session </span>
+  <mat-spinner *ngIf="$isCreatingSession | async" diameter="20"></mat-spinner>
+</button>

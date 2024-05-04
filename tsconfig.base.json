@@ -17,10 +17,10 @@
     "baseUrl": ".",
     "paths": {
       "@api/*": ["apps/api/src/*"],
-      "@attandance-checker/shared/consts": ["libs/shared/consts/src/index.ts"],
+      "@attendance-checker/shared/consts": ["libs/shared/consts/src/index.ts"],
+      "@consts/*": ["libs/shared/consts/src/*"],
       "@interfaces/*": ["libs/shared/interfaces/src/*"],
-      "@utils": ["libs/shared/utils/src/index.ts"],
-      "@consts/*": ["libs/shared/consts/src/*"]
+      "@utils": ["libs/shared/utils/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

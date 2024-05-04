@@ -1,5 +1,5 @@
 import { Organization } from '@api/app/organization/organization.entity';
-import { SessionAttandee } from '@api/app/session/session-attandee.entity';
+import { SessionAttendee } from '@api/app/session/session-attendee.entity';
 import { User } from '@api/app/user/user.entity';
 import {
   BaseEntity,
@@ -32,8 +32,8 @@ export class Session extends BaseEntity {
   @Column({ nullable: false })
   name: string;
 
-  @OneToMany(() => SessionAttandee, (sa) => sa.session, { eager: false })
-  attandees: Promise<SessionAttandee[]>;
+  @OneToMany(() => SessionAttendee, (sa) => sa.session, { eager: false })
+  attendees: Promise<SessionAttendee[]>;
 
   @CreateDateColumn()
   createdAt: Date;

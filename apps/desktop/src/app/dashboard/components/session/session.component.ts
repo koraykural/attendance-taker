@@ -1,29 +1,21 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Socket } from 'ngx-socket-io';
-import { Observable, finalize, tap } from 'rxjs';
-
-type AttendanceCodeStreamData = {
-  active: boolean;
-  code?: string;
-};
+import { Component } from '@angular/core';
+import { SessionService } from '../../session.service';
+import { Observable, filter } from 'rxjs';
+import { SessionDetails } from '@interfaces/session';
 
 @Component({
   selector: 'desktop-session',
   templateUrl: './session.component.html',
   styleUrls: ['./session.component.scss'],
 })
-export class SessionComponent implements OnInit {
-  sessionId: string;
-  attendanceCodeData$: Observable<AttendanceCodeStreamData>;
+export class SessionComponent {
+  session$ = this.sessionService.session$.pipe(
+    filter((session) => !!session)
+  ) as Observable<SessionDetails>;
 
-  constructor(private readonly activatedRoute: ActivatedRoute, private readonly socket: Socket) {}
+  constructor(private readonly sessionService: SessionService) {}
 
-  ngOnInit(): void {
-    this.sessionId = this.activatedRoute.snapshot.params['sessionId'];
-    this.socket.emit('session', { id: this.sessionId });
-    this.attendanceCodeData$ = this.socket
-      .fromEvent<AttendanceCodeStreamData>('session')
-      .pipe(tap(console.log));
+  refresh() {
+    this.sessionService.refreshSession();
   }
 }

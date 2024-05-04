@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { OrganizationService } from '../../organization.service';
 import { OrganizationUserRole } from '@interfaces/organization';
+import { OrganizationDetailsService } from '../organization-details/organization-details.service';
 
 @Component({
   selector: 'desktop-dashboard',
@@ -14,5 +15,12 @@ export class DashboardComponent {
     map((orgs) => orgs.some((org) => org.myRole === OrganizationUserRole.Owner))
   );
 
-  constructor(private organizationService: OrganizationService) {}
+  constructor(
+    private organizationService: OrganizationService,
+    private organizationDetailsService: OrganizationDetailsService
+  ) {}
+
+  handleOrganizationSelected(organizationId: string) {
+    this.organizationDetailsService.setOrganizationDetails(organizationId);
+  }
 }

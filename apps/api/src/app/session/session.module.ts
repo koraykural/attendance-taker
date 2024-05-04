@@ -1,7 +1,7 @@
 import { OrganizationUser } from '@api/app/organization/organization-user.entity';
 import { OrganizationModule } from '@api/app/organization/organization.module';
 import { RedisModule } from '@api/app/redis/redis.module';
-import { SessionAttandee } from '@api/app/session/session-attandee.entity';
+import { SessionAttendee } from '@api/app/session/session-attendee.entity';
 import { SessionController } from '@api/app/session/session.controller';
 import { Session } from '@api/app/session/session.entity';
 import { SessionGateway } from '@api/app/session/session.gateway';
@@ -11,7 +11,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([OrganizationUser, Session, SessionAttandee]),
+    TypeOrmModule.forFeature([OrganizationUser, Session, SessionAttendee]),
     OrganizationModule,
     RedisModule,
   ],

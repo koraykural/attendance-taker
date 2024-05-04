@@ -30,7 +30,7 @@ export class SessionGateway {
     return concat(
       this.sessionService
         .serveSessionAttendanceCodes(sessionId)
-        .pipe(map((code) => ({ event: 'session', data: { active: true, code } }))),
+        .pipe(map((data) => ({ event: 'session', data }))),
       of({ event: 'session', data: { active: false } }).pipe(delay(CODE_ACTIVE_TIME_MS))
     );
   }

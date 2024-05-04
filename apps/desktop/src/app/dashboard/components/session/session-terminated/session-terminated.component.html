@@ -1,0 +1,58 @@
+<div class="max-w-screen-lg w-screen">
+  <div class="p-8 mb-8">
+    <h1>
+      <mat-icon class="text-green-700 !block mx-auto mb-4 text-9xl !h-32 !w-32"
+        >check_circle</mat-icon
+      >
+      <span class="block text-3xl text-center">This session is terminated!</span>
+    </h1>
+    <button mat-flat-button color="primary" class="!block !h-fit mx-auto mt-8" (click)="reopen()">
+      <span class="block py-4 px-8">REOPEN SESSION</span>
+    </button>
+    <span class="mt-2 block text-center text-sm text-gray-700">
+      Upon reopening, existing attendees will stay in the session and new attendees can join.
+    </span>
+  </div>
+
+  <ng-container *ngIf="session$ | async as session">
+    <div class="p-8 mb-8">
+      <h2 class="text-xl font-bold mb-4">Session Details</h2>
+      <table class="w-full session-details-table">
+        <tbody>
+          <tr>
+            <th>Organization</th>
+            <td>{{ session.organizationName }}</td>
+          </tr>
+          <tr>
+            <th>Session Name</th>
+            <td>{{ session.name }}</td>
+          </tr>
+          <tr>
+            <th>Created By</th>
+            <td>{{ session.createdByFullName }}</td>
+          </tr>
+          <tr>
+            <th>Created At</th>
+            <td>{{ session.createdAt | date: 'medium' }}</td>
+          </tr>
+          <tr>
+            <th>Terminated At</th>
+            <td>{{ session.endedAt | date: 'medium' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="p-8 mb-8">
+      <div class="flex justify-between">
+        <h2 class="text-xl font-bold mb-4">Attendee List</h2>
+        <button mat-button (click)="refresh.emit()">
+          <mat-icon>refresh</mat-icon>
+        </button>
+      </div>
+      <desktop-session-attendee-list
+        [attendees]="session.attendees"
+      ></desktop-session-attendee-list>
+    </div>
+  </ng-container>
+</div>

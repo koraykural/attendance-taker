@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LayoutModule } from '@angular/cdk/layout';
+import { FormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -16,6 +17,9 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSortModule } from '@angular/material/sort';
 import { MatTooltipModule, MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material/tooltip';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -32,6 +36,7 @@ const sharedModules = [
   BrowserAnimationsModule,
   MatButtonModule,
   LayoutModule,
+  FormsModule,
   MatToolbarModule,
   MatSidenavModule,
   MatIconModule,
@@ -45,6 +50,9 @@ const sharedModules = [
   MatExpansionModule,
   MatSnackBarModule,
   MatTableModule,
+  MatTabsModule,
+  MatDialogModule,
+  MatSortModule,
   MatTooltipModule,
   MatAutocompleteModule,
   MatProgressSpinnerModule,

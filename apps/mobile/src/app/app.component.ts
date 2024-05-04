@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'attandance-checker-root',
+  selector: 'attendance-checker-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })

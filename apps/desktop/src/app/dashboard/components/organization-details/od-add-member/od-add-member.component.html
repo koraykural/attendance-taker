@@ -1,0 +1,23 @@
+<mat-form-field class="w-full" appearance="fill">
+  <mat-label>Add User</mat-label>
+  <input
+    type="text"
+    placeholder="Start typing email for name"
+    matInput
+    [formControl]="searchInputControl"
+    [matAutocomplete]="auto"
+  />
+  <mat-autocomplete
+    autoActiveFirstOption
+    #auto="matAutocomplete"
+    [displayWith]="autocompleteDisplayFn"
+  >
+    <mat-option
+      *ngFor="let option of searchUserResult$ | async"
+      [value]="option"
+      (onSelectionChange)="addUser($event.source.value.id)"
+    >
+      {{ option.email }}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

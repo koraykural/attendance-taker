@@ -9,8 +9,8 @@ import {
   PrimaryColumn,
 } from 'typeorm';
 
-@Entity('session_attandees')
-export class SessionAttandee extends BaseEntity {
+@Entity('session_attendees')
+export class SessionAttendee extends BaseEntity {
   @PrimaryColumn()
   sessionId: string;
 
@@ -30,5 +30,5 @@ export class SessionAttandee extends BaseEntity {
   session: Promise<Session>;
 
   @CreateDateColumn()
-  attandedAt: Date;
+  attendedAt: Date;
 }

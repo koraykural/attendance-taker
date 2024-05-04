@@ -1,7 +1,7 @@
-import { SessionAttandee } from '@api/app/session/session-attandee.entity';
+import { SessionAttendee } from '@api/app/session/session-attendee.entity';
 import { Session } from '@api/app/session/session.entity';
 import { User } from '@api/app/user/user.entity';
-import { CreateSessionDto } from '@interfaces/session';
+import { CreateSessionDto, SessionDetails, SessionListResponseItem } from '@interfaces/session';
 import { SESSION_ACTIVE_TIME_MS, CODE_ACTIVE_TIME_MS, CODE_GRACE_TIME_MS } from '@consts/session';
 import {
   BadRequestException,
@@ -15,13 +15,22 @@ import { Redis } from 'ioredis';
 import { v4 as uuidV4 } from 'uuid';
 import { Repository } from 'typeorm';
 import { Observable, finalize, switchMap, take, takeWhile, timer } from 'rxjs';
+import { pick } from 'lodash';
+
+type RawSessionListItem = {
+  id: string;
+  name: string;
+  createdAt: Date;
+  endedAt: Date | null;
+  attendeeCount: string;
+};
 
 @Injectable()
 export class SessionService {
   @InjectRepository(Session)
   private readonly sessionRepository: Repository<Session>;
-  @InjectRepository(SessionAttandee)
-  private readonly sessionAttandeeRepository: Repository<SessionAttandee>;
+  @InjectRepository(SessionAttendee)
+  private readonly sessionAttendeeRepository: Repository<SessionAttendee>;
   @Inject()
   private readonly redis: Redis;
 
@@ -53,11 +62,22 @@ export class SessionService {
     return session;
   }
 
-  listMySessions(user: User, organizationId: string) {
-    return this.sessionRepository.find({
-      where: { organizationId, createdById: user.id },
-      select: ['id', 'name', 'createdAt'],
-    });
+  async listMySessions(user: User, organizationId: string): Promise<SessionListResponseItem[]> {
+    const rawResult = await this.sessionRepository.query(
+      `
+      SELECT id, name, "createdAt", "endedAt", COUNT(sa."userId") as "attendeeCount"
+      FROM sessions s
+      LEFT JOIN session_attendees sa ON s.id = sa."sessionId"
+      WHERE s."organizationId" = $1 AND s."createdById" = $2
+      GROUP BY id, name, "createdAt", "endedAt"
+      ORDER BY "createdAt" DESC`,
+      [organizationId, user.id]
+    );
+
+    return rawResult.map((item: RawSessionListItem) => ({
+      ...pick(item, ['id', 'name', 'createdAt', 'endedAt']),
+      attendeeCount: parseInt(item.attendeeCount),
+    }));
   }
 
   async terminateSession(session: Session) {
@@ -72,11 +92,37 @@ export class SessionService {
     ]);
   }
 
-  async getSessionDetails(session: Session) {
-    const attendeeCount = await this.sessionAttandeeRepository.count({
-      where: { sessionId: session.id },
-    });
-    return { ...session, attendeeCount };
+  async getSessionDetails(session: Session): Promise<SessionDetails> {
+    const [attendeesRaw, organization, createdBy] = await Promise.all([
+      session.attendees,
+      session.organization,
+      session.createdBy,
+    ]);
+
+    const attendees = await Promise.all(
+      attendeesRaw.map(async (attendee) => {
+        const user = await attendee.user;
+
+        return {
+          userId: attendee.userId,
+          email: user.email,
+          fullName: `${user.firstName} ${user.lastName}`,
+          attendedAt: attendee.attendedAt,
+        };
+      })
+    );
+
+    return {
+      id: session.id,
+      name: session.name,
+      createdByEmail: createdBy.email,
+      createdByFullName: `${createdBy.firstName} ${createdBy.lastName}`,
+      createdAt: session.createdAt,
+      endedAt: session.endedAt,
+      organizationId: session.organizationId,
+      organizationName: organization.name,
+      attendees,
+    };
   }
 
   async attendSession(attendanceCode: string, user: User) {
@@ -85,22 +131,26 @@ export class SessionService {
     const sessionId = await this.redis.get(attendanceCode);
     if (!sessionId) throw new Error('Invalid attendance code');
     const session = await this.getSessionForUser(user, sessionId);
-    const alreadyAttended = await this.sessionAttandeeRepository.exist({
+    const alreadyAttended = await this.sessionAttendeeRepository.exist({
       where: { userId: user.id, sessionId: session.id },
     });
     if (alreadyAttended) throw new BadRequestException('Already attended');
-    await this.sessionAttandeeRepository.save({ userId: user.id, sessionId: session.id });
+    await this.sessionAttendeeRepository.save({ userId: user.id, sessionId: session.id });
   }
 
-  serveSessionAttendanceCodes(sessionId: string): Observable<string> {
+  serveSessionAttendanceCodes(sessionId: string): Observable<{ active: boolean; code?: string }> {
     const takeCount = SESSION_ACTIVE_TIME_MS / CODE_ACTIVE_TIME_MS;
     return timer(0, CODE_ACTIVE_TIME_MS).pipe(
       take(takeCount),
       switchMap(() => this.getSession(sessionId)),
-      takeWhile((session: Session | null) => {
-        return !!session && !session.endedAt;
+      takeWhile((session: Session | null) => !!session),
+      switchMap(async (session) => {
+        if (session?.endedAt) return { active: false };
+
+        const code = await this.updateAttendanceCode(sessionId);
+
+        return { active: true, code };
       }),
-      switchMap(() => this.updateAttendanceCode(sessionId)),
       finalize(async () => {
         const session = await this.getSession(sessionId);
         if (session) {

@@ -1,0 +1,31 @@
+<ng-container *ngIf="attendenceCode$ | async; let attendenceCode; else: loadingCode">
+  <qrcode
+    *ngIf="attendenceCode"
+    [qrdata]="attendenceCode"
+    [elementType]="'img'"
+    [errorCorrectionLevel]="'M'"
+    [width]="600"
+    class="flex justify-center"
+  ></qrcode>
+
+  <button mat-flat-button color="primary" class="!block !h-fit mx-auto mt-8" (click)="terminate()">
+    <span class="block py-4 px-8">TERMINATE SESSION</span>
+  </button>
+
+  <div class="p-8 mb-8 w-screen max-w-4xl" *ngIf="session$ | async as session">
+    <div class="flex justify-between">
+      <h2 class="text-xl font-bold mb-4">Attendee List</h2>
+      <button mat-button (click)="refresh.emit()">
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </div>
+    <desktop-session-attendee-list [attendees]="session.attendees"></desktop-session-attendee-list>
+  </div>
+</ng-container>
+
+<ng-template #loadingCode>
+  <div class="flex flex-col items-center mt-16">
+    <div>Preparing your QR code</div>
+    <mat-spinner class="block mt-4"></mat-spinner>
+  </div>
+</ng-template>

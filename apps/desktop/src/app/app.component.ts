@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 
 @Component({
-  selector: 'attandance-checker-root',
+  selector: 'attendance-checker-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })

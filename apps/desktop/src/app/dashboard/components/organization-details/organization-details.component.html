@@ -1,88 +1,18 @@
-<ng-container *ngIf="organizationDetails$ | async; let organizationDetails; else: loadingdetails">
-  <desktop-od-top-bar
-    [myRole]="organizationDetails.myRole"
-    [organizationId]="organizationId"
-  ></desktop-od-top-bar>
+<ng-container *ngIf="organization$ | async; let organization; else: loadingdetails">
+  <desktop-od-top-bar class="mb-4"></desktop-od-top-bar>
 
-  <!-- --------------------------------------- Users Table --------------------------------------- -->
-  <table mat-table [dataSource]="users$" class="mat-elevation-z0 mt-4">
-    <ng-container matColumnDef="email">
-      <td mat-cell *matCellDef="let element">{{ element.email }}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="fullName">
-      <td mat-cell *matCellDef="let element">{{ element.fullName }}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="role">
-      <td mat-cell *matCellDef="let element">{{ element.role }}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="joinedAt">
-      <td mat-cell *matCellDef="let element">{{ element.joinedAt | date }}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="actions">
-      <td mat-cell *matCellDef="let element">
-        <button
-          mat-icon-button
-          *ngIf="organizationDetails.myRole === 'Owner' && element.role === 'Member'"
-          (click)="promoteToAdmin(element.id)"
-          matTooltip="Promote as admin"
-        >
-          <mat-icon>arrow_circle_up</mat-icon>
-        </button>
-        <button
-          mat-icon-button
-          *ngIf="organizationDetails.myRole === 'Owner' && element.role === 'Admin'"
-          (click)="demoteFromAdmin(element.id)"
-          matTooltip="Demote from admin role"
-        >
-          <mat-icon>arrow_circle_down</mat-icon>
-        </button>
-
-        <button
-          mat-icon-button
-          *ngIf="
-            (organizationDetails.myRole === 'Owner' && element.role !== 'Owner') ||
-            (organizationDetails.myRole === 'Admin' && element.role === 'Member')
-          "
-          color="warn"
-          (click)="removeUser(element.id)"
-          matTooltip="Remove user from organization"
-        >
-          <mat-icon>block</mat-icon>
-        </button>
-      </td>
-    </ng-container>
-
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-  </table>
-
-  <!-- -------------------------------------- Add New User --------------------------------------- -->
-  <mat-form-field class="w-full" appearance="fill" *ngIf="organizationDetails.myRole !== 'Member'">
-    <mat-label>Add User</mat-label>
-    <input
-      type="text"
-      placeholder="Start typing email for name"
-      matInput
-      [formControl]="searchInputControl"
-      [matAutocomplete]="auto"
-    />
-    <mat-autocomplete
-      autoActiveFirstOption
-      #auto="matAutocomplete"
-      [displayWith]="autocompleteDisplayFn"
-    >
-      <mat-option
-        *ngFor="let option of searchUserResult$ | async"
-        [value]="option"
-        (onSelectionChange)="addUser($event.source.value.id)"
-      >
-        {{ option.email }}
-      </mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
+  <mat-tab-group>
+    <mat-tab label="Members">
+      <ng-template matTabContent>
+        <desktop-od-members></desktop-od-members>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Sessions" *ngIf="(myRole$ | async) !== 'Member'">
+      <ng-template matTabContent>
+        <desktop-od-sessions></desktop-od-sessions>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
 </ng-container>
 
-<ng-template #loadingdetails>Loading organization users...</ng-template>
+<ng-template #loadingdetails>Loading organization details...</ng-template>
