@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SessionAttendee } from '@interfaces/session';
 
 @Component({
@@ -9,4 +9,5 @@ import { SessionAttendee } from '@interfaces/session';
 export class SessionAttendeeListComponent {
   @Input() attendees: SessionAttendee[] = [];
   displayedColumns: string[] = ['email', 'fullName', 'attendedAt'];
+  @Output() refresh = new EventEmitter<undefined>();
 }

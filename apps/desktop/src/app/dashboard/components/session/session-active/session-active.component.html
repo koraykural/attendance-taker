@@ -11,16 +11,17 @@
   <button mat-flat-button color="primary" class="!block !h-fit mx-auto mt-8" (click)="terminate()">
     <span class="block py-4 px-8">TERMINATE SESSION</span>
   </button>
+  <span class="mt-2 block text-center text-sm text-gray-700">
+    Terminating the session will prevent new attendees from joining. You can always reopen a
+    terminated session.
+  </span>
 
-  <div class="p-8 mb-8 w-screen max-w-4xl" *ngIf="session$ | async as session">
-    <div class="flex justify-between">
-      <h2 class="text-xl font-bold mb-4">Attendee List</h2>
-      <button mat-button (click)="refresh.emit()">
-        <mat-icon>refresh</mat-icon>
-      </button>
-    </div>
-    <desktop-session-attendee-list [attendees]="session.attendees"></desktop-session-attendee-list>
-  </div>
+  <desktop-session-attendee-list
+    *ngIf="session$ | async as session"
+    [attendees]="session.attendees"
+    (refresh)="refresh.emit()"
+    class="block p-8 mb-8 w-screen max-w-screen-lg"
+  ></desktop-session-attendee-list>
 </ng-container>
 
 <ng-template #loadingCode>

@@ -6,7 +6,7 @@ import {
   CreateSessionResponseDto,
   SessionDetails,
 } from '@interfaces/session';
-import { BehaviorSubject, startWith, takeWhile } from 'rxjs';
+import { BehaviorSubject, filter, pairwise, startWith, takeWhile } from 'rxjs';
 import { NavigationEnd, Router } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
 
@@ -46,11 +46,21 @@ export class SessionService {
         }
       });
 
-    this.session$.subscribe((session) => {
-      if (session) {
+    this.session$
+      .pipe(
+        pairwise(),
+        filter(([previous, current]) => {
+          // Only listen for codes when the session changes
+          return (
+            !!current &&
+            !current.endedAt &&
+            (!previous || previous.id !== current.id || !!previous.endedAt)
+          );
+        })
+      )
+      .subscribe(() => {
         this.listenForCodes();
-      }
-    });
+      });
   }
 
   refreshSession() {
@@ -97,8 +107,6 @@ export class SessionService {
     if (!session || !!session.endedAt) {
       return;
     }
-
-    console.log('listening for codes');
 
     this.socket
       .fromEvent<AttendanceCodeStreamData>('session')
