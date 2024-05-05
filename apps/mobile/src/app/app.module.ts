@@ -5,6 +5,8 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { PreloadAllModules, RouteReuseStrategy, RouterModule } from '@angular/router';
 import { appRoutes } from './app.routes';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent],
@@ -15,6 +17,9 @@ import { appRoutes } from './app.routes';
       preloadingStrategy: PreloadAllModules,
     }),
     IonicModule.forRoot(),
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [
     {

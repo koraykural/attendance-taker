@@ -9,3 +9,4 @@ dist/
 dump.rdb
 
 .angular
+.nx/

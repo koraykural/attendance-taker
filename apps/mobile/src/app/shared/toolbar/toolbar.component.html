@@ -1,0 +1,12 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Attendence Checker</ion-title>
+    <ng-container *ngIf="isAuthenticated$ | async">
+      <ion-buttons slot="end">
+        <ion-button (click)="logout()">
+          <ion-icon slot="icon-only" color="danger" name="log-out-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ng-container>
+  </ion-toolbar>
+</ion-header>

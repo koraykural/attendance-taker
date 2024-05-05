@@ -1,66 +1,59 @@
 {
-  "name": "mobile",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "mobile",
+  "prefix": "attendance-checker",
   "projectType": "application",
   "sourceRoot": "apps/mobile/src",
-  "prefix": "attendance-checker",
+  "tags": [],
   "targets": {
     "build": {
-      "executor": "@angular-devkit/build-angular:browser",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "dist/apps/mobile",
-        "index": "apps/mobile/src/index.html",
-        "main": "apps/mobile/src/main.ts",
-        "polyfills": ["zone.js"],
-        "tsConfig": "apps/mobile/tsconfig.app.json",
-        "inlineStyleLanguage": "scss",
-        "assets": ["apps/mobile/src/favicon.ico", "apps/mobile/src/assets"],
-        "styles": ["apps/mobile/src/styles.scss"],
-        "scripts": []
-      },
       "configurations": {
+        "development": {
+          "buildOptimizer": false,
+          "extractLicenses": false,
+          "namedChunks": true,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
         "production": {
           "budgets": [
             {
-              "type": "initial",
+              "maximumError": "1mb",
               "maximumWarning": "500kb",
-              "maximumError": "1mb"
+              "type": "initial"
             },
             {
-              "type": "anyComponentStyle",
+              "maximumError": "4kb",
               "maximumWarning": "2kb",
-              "maximumError": "4kb"
+              "type": "anyComponentStyle"
             }
           ],
           "outputHashing": "all"
-        },
-        "development": {
-          "buildOptimizer": false,
-          "optimization": false,
-          "vendorChunk": true,
-          "extractLicenses": false,
-          "sourceMap": true,
-          "namedChunks": true
         }
       },
-      "defaultConfiguration": "production"
-    },
-    "serve": {
-      "executor": "@angular-devkit/build-angular:dev-server",
-      "configurations": {
-        "production": {
-          "browserTarget": "mobile:build:production"
-        },
-        "development": {
-          "browserTarget": "mobile:build:development"
-        }
-      },
-      "defaultConfiguration": "development",
+      "defaultConfiguration": "production",
+      "executor": "@angular-devkit/build-angular:browser",
       "options": {
-        "port": 4201,
-        "proxyConfig": "apps/mobile/proxy.conf.json"
-      }
+        "assets": [
+          "apps/mobile/src/favicon.ico",
+          "apps/mobile/src/assets",
+          {
+            "glob": "**/*.svg",
+            "input": "node_modules/ionicons/dist/ionicons/svg",
+            "output": "./svg"
+          }
+        ],
+        "index": "apps/mobile/src/index.html",
+        "inlineStyleLanguage": "scss",
+        "main": "apps/mobile/src/main.ts",
+        "outputPath": "dist/apps/mobile",
+        "polyfills": ["zone.js"],
+        "scripts": [],
+        "styles": ["apps/mobile/src/styles.scss"],
+        "tsConfig": "apps/mobile/tsconfig.app.json"
+      },
+      "outputs": ["{options.outputPath}"]
     },
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
@@ -73,7 +66,24 @@
       "options": {
         "lintFilePatterns": ["apps/mobile/**/*.ts", "apps/mobile/**/*.html"]
       }
+    },
+    "serve": {
+      "configurations": {
+        "development": {
+          "browserTarget": "mobile:build:development"
+        },
+        "production": {
+          "browserTarget": "mobile:build:production"
+        }
+      },
+      "defaultConfiguration": "development",
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "options": {
+        "disableHostCheck": true,
+        "host": "192.168.1.104",
+        "port": 4201,
+        "proxyConfig": "apps/mobile/proxy.conf.json"
+      }
     }
-  },
-  "tags": []
+  }
 }

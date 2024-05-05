@@ -1,0 +1,38 @@
+<attendance-checker-toolbar></attendance-checker-toolbar>
+
+<ion-content>
+  <div class="flex flex-col justify-center items-center h-full">
+    <ion-text class="mb-2">
+      <h1>Login</h1>
+    </ion-text>
+    <form (ngSubmit)="login()" [formGroup]="credentials" class="w-full">
+      <div class="input-group">
+        <ion-item>
+          <ion-input
+            label="Email"
+            labelPlacement="stacked"
+            placeholder="Email"
+            formControlName="email"
+          ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input
+            label="Password"
+            labelPlacement="stacked"
+            type="password"
+            placeholder="Password"
+            formControlName="password"
+          ></ion-input>
+        </ion-item>
+      </div>
+
+      <ion-button type="submit" expand="block" color="primary" [disabled]="!credentials.valid">
+        Login
+      </ion-button>
+    </form>
+
+    <ion-button class="mt-4" type="button" fill="clear" href="/register" color="secondary">
+      Sign up instead
+    </ion-button>
+  </div>
+</ion-content>
