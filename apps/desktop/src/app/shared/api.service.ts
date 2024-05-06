@@ -7,7 +7,7 @@ export class ApiService {
   public baseUrl: string;
 
   public constructor(private http: HttpClient) {
-    this.baseUrl = 'http://localhost:3333/api/';
+    this.baseUrl = 'https://localhost/api/';
   }
 
   get<T>(...params: Parameters<HttpClient['get']>): Observable<T> {

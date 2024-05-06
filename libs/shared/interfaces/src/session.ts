@@ -22,6 +22,11 @@ export abstract class SessionListResponseItem {
   attendeeCount: number;
 }
 
+export abstract class AttendedSessionListResponseItem {
+  name: string;
+  attendedAt: Date;
+}
+
 export abstract class SessionAttendee {
   userId: string;
   email: string;

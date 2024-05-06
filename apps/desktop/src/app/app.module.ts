@@ -9,7 +9,7 @@ import { SharedModule } from './shared/shared.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 
 const config: SocketIoConfig = {
-  url: 'http://localhost:3333',
+  url: 'https://localhost',
   options: { autoConnect: true, transports: ['websocket'] },
 };
 

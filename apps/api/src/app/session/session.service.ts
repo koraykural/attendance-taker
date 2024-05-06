@@ -1,7 +1,12 @@
 import { SessionAttendee } from '@api/app/session/session-attendee.entity';
 import { Session } from '@api/app/session/session.entity';
 import { User } from '@api/app/user/user.entity';
-import { CreateSessionDto, SessionDetails, SessionListResponseItem } from '@interfaces/session';
+import {
+  AttendedSessionListResponseItem,
+  CreateSessionDto,
+  SessionDetails,
+  SessionListResponseItem,
+} from '@interfaces/session';
 import { SESSION_ACTIVE_TIME_MS, CODE_ACTIVE_TIME_MS, CODE_GRACE_TIME_MS } from '@consts/session';
 import {
   BadRequestException,
@@ -62,7 +67,10 @@ export class SessionService {
     return session;
   }
 
-  async listMySessions(user: User, organizationId: string): Promise<SessionListResponseItem[]> {
+  async listSessionsICreated(
+    user: User,
+    organizationId: string
+  ): Promise<SessionListResponseItem[]> {
     const rawResult = await this.sessionRepository.query(
       `
       SELECT id, name, "createdAt", "endedAt", COUNT(sa."userId") as "attendeeCount"
@@ -77,6 +85,22 @@ export class SessionService {
     return rawResult.map((item: RawSessionListItem) => ({
       ...pick(item, ['id', 'name', 'createdAt', 'endedAt']),
       attendeeCount: parseInt(item.attendeeCount),
+    }));
+  }
+
+  async listSessionsIAttended(user: User): Promise<AttendedSessionListResponseItem[]> {
+    const rawResult = await this.sessionAttendeeRepository.query(
+      `
+      SELECT s.name, sa."attendedAt"
+      FROM session_attendees sa
+      JOIN sessions s ON sa."sessionId" = s.id
+      WHERE sa."userId" = $1
+      ORDER BY sa."attendedAt" DESC`,
+      [user.id]
+    );
+
+    return rawResult.map((item: AttendedSessionListResponseItem) => ({
+      ...pick(item, ['name', 'attendedAt']),
     }));
   }
 
@@ -129,13 +153,17 @@ export class SessionService {
     if (!attendanceCode.startsWith('code-'))
       throw new BadRequestException('Invalid attendance code');
     const sessionId = await this.redis.get(attendanceCode);
-    if (!sessionId) throw new Error('Invalid attendance code');
+    if (!sessionId) throw new BadRequestException('Invalid attendance code');
     const session = await this.getSessionForUser(user, sessionId);
     const alreadyAttended = await this.sessionAttendeeRepository.exist({
       where: { userId: user.id, sessionId: session.id },
     });
     if (alreadyAttended) throw new BadRequestException('Already attended');
     await this.sessionAttendeeRepository.save({ userId: user.id, sessionId: session.id });
+
+    return {
+      sessionName: session.name,
+    };
   }
 
   serveSessionAttendanceCodes(sessionId: string): Observable<{ active: boolean; code?: string }> {

@@ -1,15 +1,30 @@
 <attendance-checker-toolbar></attendance-checker-toolbar>
 
 <ion-content>
+  <ngx-scanner-qrcode
+    #action="scanner"
+    (event)="onEvent($event)"
+    [class]="inUse ? '!block' : '!hidden'"
+  ></ngx-scanner-qrcode>
+
   <ion-list>
-    <ion-item *ngFor="let barcode of barcodes">
-      <ion-label position="stacked">{{ barcode.format }}</ion-label>
-      <ion-input type="text" [value]="barcode.rawValue"></ion-input>
+    <ion-item *ngFor="let session of sessions$ | async">
+      <ion-label>
+        {{ session.name }}
+        <span class="block text-sm text-gray-700"> {{ session.attendedAt | date: 'long' }}</span>
+      </ion-label>
     </ion-item>
   </ion-list>
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-    <ion-fab-button (click)="scan()" [disabled]="!isSupported">
-      <ion-icon name="scan"></ion-icon>
+
+  <ion-fab
+    (click)="handle(action, action.isStart ? 'stop' : 'start')"
+    slot="fixed"
+    vertical="bottom"
+    horizontal="end"
+  >
+    <ion-fab-button>
+      <ion-icon *ngIf="!inUse" name="scan"></ion-icon>
+      <ion-icon *ngIf="inUse" name="close"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 </ion-content>

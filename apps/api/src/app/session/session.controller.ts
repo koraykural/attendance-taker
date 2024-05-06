@@ -42,9 +42,14 @@ export class SessionController {
     return this.sessionService.attendSession(attendanceCode, user);
   }
 
+  @Get('attended')
+  listSessionIAttended(@CurrentUser() user: User) {
+    return this.sessionService.listSessionsIAttended(user);
+  }
+
   @Get('organization/:organizationId')
-  listMySessions(@CurrentUser() user: User, @Param('organizationId') organizationId: string) {
-    return this.sessionService.listMySessions(user, organizationId);
+  listSessionsICreated(@CurrentUser() user: User, @Param('organizationId') organizationId: string) {
+    return this.sessionService.listSessionsICreated(user, organizationId);
   }
 
   @Get(':sessionId')
