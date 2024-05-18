@@ -25,6 +25,7 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: attendence-taker-desktop
           IMAGE_TAG: ${{ github.sha }}
-        - run: docker build . --file desktop.Dockerfile --tag desktop:$(date +%s)
-        - run: docker tag desktop:$(date +%s) $ECR_REGISTRY/$ECR_REPOSITORY:latest
-        - run: docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+        run: |
+          docker build . --file desktop.Dockerfile --tag desktop:$(date +%s)
+          docker tag desktop:$(date +%s) $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
