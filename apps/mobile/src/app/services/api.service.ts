@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { tap, switchMap, map } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 import { BehaviorSubject, EMPTY, from, Observable, of } from 'rxjs';
-import { Storage } from '@capacitor/storage';
 import { Router } from '@angular/router';
 import { LoginDto, RegisterDto } from '@interfaces/auth';
 import { AttendedSessionListResponseItem } from '@interfaces/session';
@@ -13,7 +12,7 @@ const ACCESS_TOKEN_KEY = 'my-access-token';
   providedIn: 'root',
 })
 export class ApiService {
-  baseUrl = 'https://192.168.1.104/api';
+  baseUrl = 'https://172.20.10.2/api';
   isAuthenticated = new BehaviorSubject<boolean | null>(null);
   currentAccessToken: string | null = null;
   attendedCodes = new BehaviorSubject<string[]>([]);
@@ -23,9 +22,9 @@ export class ApiService {
   }
 
   async loadToken() {
-    const token = await Storage.get({ key: ACCESS_TOKEN_KEY });
-    if (token && token.value) {
-      this.currentAccessToken = token.value;
+    const token = localStorage.getItem(ACCESS_TOKEN_KEY);
+    if (token) {
+      this.currentAccessToken = token;
       this.isAuthenticated.next(true);
     } else {
       this.isAuthenticated.next(false);
@@ -47,14 +46,14 @@ export class ApiService {
   setToken(accessToken: string) {
     this.currentAccessToken = accessToken;
     this.isAuthenticated.next(true);
-    const storeAccess = Storage.set({ key: ACCESS_TOKEN_KEY, value: accessToken });
-    return from(storeAccess);
+    localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
+    return EMPTY;
   }
 
   logout() {
     this.currentAccessToken = null;
     this.isAuthenticated.next(false);
-    Storage.remove({ key: ACCESS_TOKEN_KEY });
+    localStorage.removeItem(ACCESS_TOKEN_KEY);
     this.router.navigateByUrl('/login');
   }
 

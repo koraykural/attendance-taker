@@ -104,7 +104,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   const port = process.env.PORT || 443;
   await app.listen(port);
-  Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
+  Logger.log(`🚀 Application is running on: https://localhost:${port}/${globalPrefix}`);
 }
 
 bootstrap();

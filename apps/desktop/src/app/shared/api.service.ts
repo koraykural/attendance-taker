@@ -2,12 +2,14 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
+export const API_URL = 'https://172.20.10.2';
+
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   public baseUrl: string;
 
   public constructor(private http: HttpClient) {
-    this.baseUrl = 'https://localhost/api/';
+    this.baseUrl = `${API_URL}/api/`;
   }
 
   get<T>(...params: Parameters<HttpClient['get']>): Observable<T> {

@@ -85,7 +85,7 @@
       "executor": "@angular-devkit/build-angular:dev-server",
       "options": {
         "disableHostCheck": true,
-        "host": "0.0.0.0",
+        "host": "172.20.10.2",
         "port": 4201,
         "proxyConfig": "apps/mobile/proxy.conf.json",
         "ssl": true
