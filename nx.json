@@ -1,28 +1,19 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "npmScope": "attendance-checker",
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "@nrwl/nx-cloud",
-      "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"],
-        "accessToken": "OTc0NjZiYmItYjNkYi00MjZkLWJkYzYtYmJhNWFiYjFhYmI0fHJlYWQtd3JpdGU="
-      }
-    }
-  },
-  "targetDefaults": {
-    "build": {
-      "dependsOn": ["^build"],
-      "inputs": ["production", "^production"]
+  "defaultProject": "desktop",
+  "generators": {
+    "@nrwl/angular:application": {
+      "e2eTestRunner": "none",
+      "linter": "eslint",
+      "style": "scss",
+      "unitTestRunner": "none"
     },
-    "lint": {
-      "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
+    "@nrwl/angular:component": {
+      "style": "scss"
     },
-    "test": {
-      "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"]
-    },
-    "e2e": {
-      "inputs": ["default", "^production"]
+    "@nrwl/angular:library": {
+      "linter": "eslint",
+      "unitTestRunner": "none"
     }
   },
   "namedInputs": {
@@ -36,20 +27,30 @@
     ],
     "sharedGlobals": []
   },
-  "generators": {
-    "@nrwl/angular:application": {
-      "style": "scss",
-      "linter": "eslint",
-      "unitTestRunner": "none",
-      "e2eTestRunner": "none"
+  "neverConnectToCloud": true,
+  "npmScope": "attendance-checker",
+  "targetDefaults": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
     },
-    "@nrwl/angular:library": {
-      "linter": "eslint",
-      "unitTestRunner": "none"
+    "e2e": {
+      "inputs": ["default", "^production"]
     },
-    "@nrwl/angular:component": {
-      "style": "scss"
+    "lint": {
+      "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
+    },
+    "test": {
+      "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"]
     }
   },
-  "defaultProject": "desktop"
+  "tasksRunnerOptions": {
+    "default": {
+      "options": {
+        "accessToken": "OTc0NjZiYmItYjNkYi00MjZkLWJkYzYtYmJhNWFiYjFhYmI0fHJlYWQtd3JpdGU=",
+        "cacheableOperations": ["build", "lint", "test", "e2e"]
+      },
+      "runner": "@nrwl/nx-cloud"
+    }
+  }
 }
