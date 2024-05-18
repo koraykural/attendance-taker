@@ -6,7 +6,7 @@ COPY package*.json ./
 RUN npm install --legacy-peer-deps
 
 COPY . .
-RUN npm run build -- desktop
+RUN npm run build -- desktop --skip-nx-cache
 
 FROM node:18 as production
 ENV NODE_ENV=production
