@@ -26,6 +26,7 @@ jobs:
           ECR_REPOSITORY: attendence-taker-api
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build . --file api.Dockerfile --tag attendence-taker-api:latest
-          docker tag attendence-taker-api:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          echo $ECR_REGISTRY/$ECR_REPOSITORY
+          docker build . --file api.Dockerfile --tag api
+          docker tag api $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
