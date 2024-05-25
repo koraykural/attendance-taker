@@ -7,12 +7,10 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     cors: true,
   });
-  const globalPrefix = 'api';
-  app.setGlobalPrefix(globalPrefix);
   app.useGlobalPipes(new ValidationPipe());
   const port = Config.PORT;
   await app.listen(port);
-  Logger.log(`🚀 Application is running on: https://localhost:${port}/${globalPrefix}`);
+  Logger.log(`🚀 Application is running on: https://localhost:${port}`);
 }
 
 bootstrap();
