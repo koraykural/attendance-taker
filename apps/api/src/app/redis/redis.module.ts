@@ -26,7 +26,11 @@ const productionRedisFactor: FactoryProvider['useFactory'] = () => {
         host: Config.REDIS_HOST,
       },
     ],
-    { scaleReads: 'slave' }
+    {
+      scaleReads: 'slave',
+      dnsLookup: (address, callback) => callback(null, address),
+      slotsRefreshTimeout: 2000,
+    }
   );
 
   cluster.on('connect', () => {
