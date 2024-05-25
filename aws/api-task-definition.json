@@ -19,8 +19,8 @@
       "portMappings": [
         {
           "appProtocol": "http",
-          "containerPort": 80,
-          "hostPort": 80,
+          "containerPort": 3333,
+          "hostPort": 3333,
           "name": "3333",
           "protocol": "tcp"
         }
