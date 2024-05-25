@@ -23,6 +23,9 @@ const config: PostgresConnectionOptions = {
   synchronize: false,
   metadataTableName: 'typeorm_metadata',
   migrationsTableName: 'typeorm_migrations',
+  ssl: {
+    rejectUnauthorized: false,
+  },
 };
 
 export default new DataSource(config);
