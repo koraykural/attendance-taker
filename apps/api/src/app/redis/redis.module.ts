@@ -32,6 +32,7 @@ const productionRedisFactory: FactoryProvider['useFactory'] = () => {
       slotsRefreshTimeout: 2000,
       redisOptions: {
         tls: {},
+        lazyConnect: true,
       },
     }
   );
