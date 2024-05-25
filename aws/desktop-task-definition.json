@@ -1,0 +1,64 @@
+{
+  "containerDefinitions": [
+    {
+      "cpu": 0,
+      "environment": [],
+      "essential": true,
+      "image": "574099924710.dkr.ecr.eu-central-1.amazonaws.com/attendence-taker-desktop:4b7810ced6bf42dcc490cd77beb76f32ecec29b1",
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-create-group": "true",
+          "awslogs-group": "/ecs/attendence-desktop",
+          "awslogs-region": "eu-central-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "mountPoints": [],
+      "name": "desktop",
+      "portMappings": [
+        {
+          "appProtocol": "http",
+          "containerPort": 80,
+          "hostPort": 80,
+          "name": "3333",
+          "protocol": "tcp"
+        }
+      ],
+      "secrets": [],
+      "systemControls": [],
+      "volumesFrom": []
+    },
+    {
+      "command": ["--config=/etc/ecs/ecs-cloudwatch.yaml"],
+      "cpu": 0,
+      "environment": [],
+      "essential": true,
+      "image": "public.ecr.aws/aws-observability/aws-otel-collector:v0.39.0",
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-create-group": "true",
+          "awslogs-group": "/ecs/ecs-aws-otel-sidecar-collector",
+          "awslogs-region": "eu-central-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "mountPoints": [],
+      "name": "aws-otel-collector",
+      "portMappings": [],
+      "systemControls": [],
+      "volumesFrom": []
+    }
+  ],
+  "cpu": "1024",
+  "executionRoleArn": "arn:aws:iam::574099924710:role/ecsTaskExecutionRole",
+  "family": "attendence-desktop",
+  "memory": "2048",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "runtimePlatform": {
+    "cpuArchitecture": "X86_64",
+    "operatingSystemFamily": "LINUX"
+  }
+}
