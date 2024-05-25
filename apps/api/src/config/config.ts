@@ -32,6 +32,14 @@ export class Config {
       Object.assign(Config, secrets);
     }
   }
+
+  static get isProduction() {
+    return Config.NODE_ENV === 'production';
+  }
+
+  static get isDevelopment() {
+    return Config.NODE_ENV === 'development';
+  }
 }
 
 Config._initialize();
