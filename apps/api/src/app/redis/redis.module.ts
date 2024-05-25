@@ -2,7 +2,7 @@ import Config from '@api/config/config';
 import { FactoryProvider, Module, Provider } from '@nestjs/common';
 import { Redis, Cluster } from 'ioredis';
 
-const developmentRedisFactor: FactoryProvider['useFactory'] = () => {
+const developmentRedisFactory: FactoryProvider['useFactory'] = () => {
   const client = new Redis({
     port: Config.REDIS_PORT,
     host: Config.REDIS_HOST,
@@ -18,7 +18,7 @@ const developmentRedisFactor: FactoryProvider['useFactory'] = () => {
   return client;
 };
 
-const productionRedisFactor: FactoryProvider['useFactory'] = () => {
+const productionRedisFactory: FactoryProvider['useFactory'] = () => {
   const cluster = new Cluster(
     [
       {
@@ -48,7 +48,9 @@ const productionRedisFactor: FactoryProvider['useFactory'] = () => {
 
 const redisProvider: Provider = {
   provide: Redis,
-  useFactory: Config.isProduction ? productionRedisFactor : developmentRedisFactor,
+  useFactory: Config.REDIS_HOST.includes('amazonaws')
+    ? productionRedisFactory
+    : developmentRedisFactory,
 };
 
 @Module({
