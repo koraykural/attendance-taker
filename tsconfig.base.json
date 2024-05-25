@@ -17,7 +17,8 @@
     "baseUrl": ".",
     "paths": {
       "@api/*": ["apps/api/src/*"],
-      "@attendance-checker/shared/consts": ["libs/shared/consts/src/index.ts"],
+      "@desktop/*": ["apps/desktop/src/*"],
+      "@mobile/*": ["apps/mobile/src/*"],
       "@consts/*": ["libs/shared/consts/src/*"],
       "@interfaces/*": ["libs/shared/interfaces/src/*"],
       "@utils": ["libs/shared/utils/src/index.ts"]

@@ -1,15 +1,14 @@
-import { HttpClient, HttpHandler } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '@desktop/environments/environment';
 import { Observable } from 'rxjs';
-
-export const API_URL = 'https://172.20.10.2';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   public baseUrl: string;
 
   public constructor(private http: HttpClient) {
-    this.baseUrl = `${API_URL}/api/`;
+    this.baseUrl = environment.apiUrl + '/';
   }
 
   get<T>(...params: Parameters<HttpClient['get']>): Observable<T> {

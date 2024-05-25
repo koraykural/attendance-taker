@@ -7,10 +7,10 @@ import { appRoutes } from './app.routes';
 import { AuthModule } from './auth/auth.module';
 import { SharedModule } from './shared/shared.module';
 import { DashboardModule } from './dashboard/dashboard.module';
-import { API_URL } from './shared/api.service';
+import { environment } from '@desktop/environments/environment';
 
 const config: SocketIoConfig = {
-  url: API_URL,
+  url: environment.apiUrl,
   options: { autoConnect: true, transports: ['websocket'] },
 };
 

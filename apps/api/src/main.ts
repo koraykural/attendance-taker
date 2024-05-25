@@ -10,7 +10,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   const port = Config.PORT;
   await app.listen(port);
-  Logger.log(`🚀 Application is running on: https://localhost:${port}`);
+  Logger.log(`🚀 Application is running on: http://localhost:${port}`);
 }
 
 bootstrap();

@@ -29,6 +29,12 @@
               "type": "anyComponentStyle"
             }
           ],
+          "fileReplacements": [
+            {
+              "replace": "apps/desktop/src/environments/environment.ts",
+              "with": "apps/desktop/src/environments/environment.prod.ts"
+            }
+          ],
           "outputHashing": "all"
         }
       },
@@ -74,9 +80,7 @@
       },
       "defaultConfiguration": "development",
       "executor": "@angular-devkit/build-angular:dev-server",
-      "options": {
-        "proxyConfig": "apps/desktop/proxy.conf.json"
-      }
+      "options": {}
     }
   }
 }
