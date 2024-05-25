@@ -30,6 +30,9 @@ const productionRedisFactor: FactoryProvider['useFactory'] = () => {
       scaleReads: 'slave',
       dnsLookup: (address, callback) => callback(null, address),
       slotsRefreshTimeout: 2000,
+      redisOptions: {
+        tls: {},
+      },
     }
   );
 
