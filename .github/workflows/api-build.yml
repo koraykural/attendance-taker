@@ -29,5 +29,20 @@ jobs:
           ECR_REPOSITORY: attendence-taker-api
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build . --file api.Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          docker build . -f api.Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
           docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: .aws/api-task-definition.json
+          container-name: attendence-taker-api
+          image: ${{ steps.build-image.outputs.image }}
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: api
+          cluster: attendence
+          wait-for-service-stability: true

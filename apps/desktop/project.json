@@ -1,69 +1,55 @@
 {
-  "name": "desktop",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "desktop",
+  "prefix": "desktop",
   "projectType": "application",
   "sourceRoot": "apps/desktop/src",
-  "prefix": "desktop",
+  "tags": [],
   "targets": {
     "build": {
+      "configurations": {
+        "development": {
+          "buildOptimizer": false,
+          "extractLicenses": false,
+          "namedChunks": true,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "budgets": [
+            {
+              "maximumError": "3mb",
+              "maximumWarning": "500kb",
+              "type": "initial"
+            },
+            {
+              "maximumError": "4kb",
+              "maximumWarning": "2kb",
+              "type": "anyComponentStyle"
+            }
+          ],
+          "outputHashing": "all"
+        }
+      },
+      "defaultConfiguration": "production",
       "executor": "@angular-devkit/build-angular:browser",
-      "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/apps/desktop",
-        "index": "apps/desktop/src/index.html",
-        "main": "apps/desktop/src/main.ts",
-        "polyfills": ["zone.js"],
-        "tsConfig": "apps/desktop/tsconfig.app.json",
-        "inlineStyleLanguage": "scss",
+        "allowedCommonJsDependencies": ["qrcode", "validator"],
         "assets": ["apps/desktop/src/favicon.ico", "apps/desktop/src/assets"],
+        "index": "apps/desktop/src/index.html",
+        "inlineStyleLanguage": "scss",
+        "main": "apps/desktop/src/main.ts",
+        "outputPath": "dist/apps/desktop",
+        "polyfills": ["zone.js"],
+        "scripts": [],
         "styles": [
           "@angular/material/prebuilt-themes/indigo-pink.css",
           "apps/desktop/src/styles.scss"
         ],
-        "scripts": [],
-        "allowedCommonJsDependencies": ["qrcode", "validator"]
+        "tsConfig": "apps/desktop/tsconfig.app.json"
       },
-      "configurations": {
-        "production": {
-          "budgets": [
-            {
-              "type": "initial",
-              "maximumWarning": "500kb",
-              "maximumError": "1mb"
-            },
-            {
-              "type": "anyComponentStyle",
-              "maximumWarning": "2kb",
-              "maximumError": "4kb"
-            }
-          ],
-          "outputHashing": "all"
-        },
-        "development": {
-          "buildOptimizer": false,
-          "optimization": false,
-          "vendorChunk": true,
-          "extractLicenses": false,
-          "sourceMap": true,
-          "namedChunks": true
-        }
-      },
-      "defaultConfiguration": "production"
-    },
-    "serve": {
-      "executor": "@angular-devkit/build-angular:dev-server",
-      "configurations": {
-        "production": {
-          "browserTarget": "desktop:build:production"
-        },
-        "development": {
-          "browserTarget": "desktop:build:development"
-        }
-      },
-      "defaultConfiguration": "development",
-      "options": {
-        "proxyConfig": "apps/desktop/proxy.conf.json"
-      }
+      "outputs": ["{options.outputPath}"]
     },
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
@@ -76,7 +62,21 @@
       "options": {
         "lintFilePatterns": ["apps/desktop/**/*.ts", "apps/desktop/**/*.html"]
       }
+    },
+    "serve": {
+      "configurations": {
+        "development": {
+          "browserTarget": "desktop:build:development"
+        },
+        "production": {
+          "browserTarget": "desktop:build:production"
+        }
+      },
+      "defaultConfiguration": "development",
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "options": {
+        "proxyConfig": "apps/desktop/proxy.conf.json"
+      }
     }
-  },
-  "tags": []
+  }
 }

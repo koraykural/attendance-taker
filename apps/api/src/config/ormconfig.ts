@@ -6,16 +6,17 @@ import { OrganizationUser } from '@api/app/organization/organization-user.entity
 import { Session } from '@api/app/session/session.entity';
 import { SessionAttendee } from '@api/app/session/session-attendee.entity';
 import { join } from 'path';
+import { Config } from './config';
 
 const entities = [User, Organization, OrganizationUser, Session, SessionAttendee];
 
 const config: PostgresConnectionOptions = {
   type: 'postgres',
-  host: 'localhost',
-  port: 5432,
-  username: 'koray',
-  database: 'attendance',
-  password: 'DhdtG53euTkC9hfP',
+  host: Config.DB_HOST,
+  port: Config.DB_PORT,
+  username: Config.DB_USERNAME,
+  database: Config.DB_DATABASE,
+  password: Config.DB_PASSWORD,
   entities,
   migrations: [join(__dirname, '..', 'migrations', '*.ts')],
   logging: false,

@@ -1,108 +1,16 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
-const key = `-----BEGIN PRIVATE KEY-----
-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
-dJ0+qhjvDj/UQXvqPXDtKPCMG1orf6M=
------END PRIVATE KEY-----`;
-const cert = `-----BEGIN CERTIFICATE-----
-MIIF7zCCA9egAwIBAgIUPPfEtmio+FCIc76FvZnaYg1a5lowDQYJKoZIhvcNAQEL
-BQAwgYYxCzAJBgNVBAYTAlhYMRIwEAYDVQQIDAlTdGF0ZU5hbWUxETAPBgNVBAcM
-CENpdHlOYW1lMRQwEgYDVQQKDAtDb21wYW55TmFtZTEbMBkGA1UECwwSQ29tcGFu
-eVNlY3Rpb25OYW1lMR0wGwYDVQQDDBRDb21tb25OYW1lT3JIb3N0bmFtZTAeFw0y
-NDA1MDYwNzUwMDZaFw0zNDA1MDQwNzUwMDZaMIGGMQswCQYDVQQGEwJYWDESMBAG
-A1UECAwJU3RhdGVOYW1lMREwDwYDVQQHDAhDaXR5TmFtZTEUMBIGA1UECgwLQ29t
-cGFueU5hbWUxGzAZBgNVBAsMEkNvbXBhbnlTZWN0aW9uTmFtZTEdMBsGA1UEAwwU
-Q29tbW9uTmFtZU9ySG9zdG5hbWUwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIK
-AoICAQCUb54sC5Y0Mpk7cYXYbh4GaYQUerGu9DNT8DjWzQHqD2PuEXB4xYqKAQs0
-pVrjkLr3dUrOjVHfK8IoHQoag3+yJfFmrkJaeZ63tUnaeK54GTVev3EviKajxL1F
-QvFmGgHRdZznaqGoANWUvHciNw7USEDbu1TKGgfe+YZzM2t9TIJ5FuCBx/cTG1Eq
-b34zfthQT1/PKkTfk2MjJkZZglvdV/wM1z1WbYpORzq1ORi5PjfPmwqDwMFg8Y8i
-J0ygiOCP9A0cHut6Rrz3IzCEiYP9t0o2CJQLHBeNumvsjMu03kMpFjQx30uT22L5
-XzihLZb6WCL8Y7uKfMFG0xgJlTw+lQF8W8EWNeyJiOjVxHPW15wfrWxM4Ce5xUYO
-65tBy8Pc2MCvQUaRMQEy6wwhrPXE8O+FDg1zKj3SuLXe4SZhNdpEXVYvjd/+i/+d
-GFBvvVd96SHugz+hq3vxI9wjXH/gt412H2r3rqAhMowIJrhi+NxCsjCHBd0P6g4f
-Xvk0J5NpEDQXD6m2//nDc0ZkFjxc+vfyDT3GyP0i9KfM2GLI/FSEAFRcjcLlnUYZ
-qLsZPoPgf1ULv7GosHXqPmq493g9CRkrgdv7m3eLJHNxtz1gNQlycqobVA0uSTRF
-PGet5UluBiNe/FzaX99swk1/dlOGqeiJwZwvQIfNfbZpuZugrQIDAQABo1MwUTAd
-BgNVHQ4EFgQUwYovAAr8vKdZKkBgxpcaWYPrbhMwHwYDVR0jBBgwFoAUwYovAAr8
-vKdZKkBgxpcaWYPrbhMwDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOC
-AgEAUjWCEHiC8hAO2cHCwG7aAXPrxMzjNaF51OvIgagWTnp40Te6HGJEqfRqCvFA
-tvg7NNVf+XxRQHMUez+i9OtFbMkx1fkU1XQ/3AZkoEpg147ydWmXuxDNEqb/AS/2
-SXcyXo0jheoDm4BM1oINujBi3hlgJJKl82ckOOelf2JvuNmf4U1u63nYaPnk2n7e
-konABKOVluyLhiZzkbT/nJD/+gqiyUUpOVzr8Me2kMA6tIj9TrLxupskfCz1H629
-f674cI0puUaLmmuOVAI8isi2AEzH463vJQS91hOyHs3Dm7Zy5qrK7aeBdoCFalMj
-PX2MN5hbDE88D68XYsjYmEa1NrBxmZREdvC6kSvTFn1xArm3ghRfxRvVCbJzc1tj
-jmgG/l9UFdGzF/CO5OsAw1UJWhRWbzhU35Q7cQ/Q/GW6QwSz0UigAdJqJ3VQt71W
-nLXV/mvBEAT6fuyVi13eB5aZxs3FWPInilymn+b0e9z0Sa0SBm4gfrfrDe2pl0Nl
-cLLNoej0nX6DiNHLjE91OyDSZ12rAMPAERvN4c5LlddeGGWwy5ll/7TcWJQagCQP
-qdhshvr/n2cPEB4ZxIsgGzaK2RcYpD0esoOJPBA8VjBmsm73XuqSCoQpR/q3bqFy
-eAdneiv7arxqekPucsdxwFRMQHixq57Nvo1OSvK6SdNWUZY=
------END CERTIFICATE-----`;
-
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
+import { Config } from '@api/config/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     cors: true,
-    httpsOptions: { key, cert },
   });
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
   app.useGlobalPipes(new ValidationPipe());
-  const port = process.env.PORT || 443;
+  const port = Config.PORT;
   await app.listen(port);
   Logger.log(`🚀 Application is running on: https://localhost:${port}/${globalPrefix}`);
 }

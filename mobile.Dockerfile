@@ -6,7 +6,7 @@ COPY package*.json ./
 RUN npm install --legacy-peer-deps
 
 COPY . .
-RUN npm run build -- desktop --skip-nx-cache
+RUN npm run build -- mobile --skip-nx-cache
 
 FROM nginx:latest
 

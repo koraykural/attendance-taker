@@ -1,60 +1,47 @@
 {
-  "name": "api",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/api/src",
+  "name": "api",
   "projectType": "application",
+  "sourceRoot": "apps/api/src",
+  "tags": [],
   "targets": {
     "build": {
-      "executor": "@nrwl/webpack:webpack",
-      "outputs": [
-        "{options.outputPath}"
-      ],
-      "options": {
-        "target": "node",
-        "compiler": "tsc",
-        "outputPath": "dist/apps/api",
-        "main": "apps/api/src/main.ts",
-        "tsConfig": "apps/api/tsconfig.app.json",
-        "assets": [
-          "apps/api/src/assets"
-        ]
-      },
       "configurations": {
         "production": {
-          "optimization": true,
           "extractLicenses": true,
+          "fileReplacements": [],
           "inspect": false,
-          "fileReplacements": [
-            {
-              "replace": "apps/api/src/environments/environment.ts",
-              "with": "apps/api/src/environments/environment.prod.ts"
-            }
-          ]
+          "optimization": true
         }
-      }
+      },
+      "executor": "@nrwl/webpack:webpack",
+      "options": {
+        "assets": ["apps/api/src/assets"],
+        "compiler": "tsc",
+        "main": "apps/api/src/main.ts",
+        "outputPath": "dist/apps/api",
+        "target": "node",
+        "tsConfig": "apps/api/tsconfig.app.json"
+      },
+      "outputs": ["{options.outputPath}"]
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["apps/api/**/*.ts"]
+      },
+      "outputs": ["{options.outputFile}"]
     },
     "serve": {
-      "executor": "@nrwl/js:node",
-      "options": {
-        "buildTarget": "api:build"
-      },
       "configurations": {
         "production": {
           "buildTarget": "api:build:production"
         }
-      }
-    },
-    "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      },
+      "executor": "@nrwl/js:node",
       "options": {
-        "lintFilePatterns": [
-          "apps/api/**/*.ts"
-        ]
+        "buildTarget": "api:build"
       }
     }
-  },
-  "tags": []
+  }
 }

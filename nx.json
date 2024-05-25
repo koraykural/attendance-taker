@@ -27,7 +27,6 @@
     ],
     "sharedGlobals": []
   },
-  "neverConnectToCloud": true,
   "npmScope": "attendance-checker",
   "targetDefaults": {
     "build": {
