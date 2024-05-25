@@ -1,4 +1,4 @@
-name: Docker Image CI - Desktop
+name: Docker Image CI - Mobile
 on:
   push:
     branches: ['main']
