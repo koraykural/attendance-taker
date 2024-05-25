@@ -6,7 +6,7 @@ import { OrganizationUser } from '@api/app/organization/organization-user.entity
 import { Session } from '@api/app/session/session.entity';
 import { SessionAttendee } from '@api/app/session/session-attendee.entity';
 import { join } from 'path';
-import { Config } from './config';
+import Config from './config';
 
 const entities = [User, Organization, OrganizationUser, Session, SessionAttendee];
 
@@ -23,7 +23,7 @@ const config: PostgresConnectionOptions = {
   synchronize: false,
   metadataTableName: 'typeorm_metadata',
   migrationsTableName: 'typeorm_migrations',
-  ...(Config.isProduction && {
+  ...(Config.DB_HOST.includes('amazonaws') && {
     ssl: {
       rejectUnauthorized: false,
     },

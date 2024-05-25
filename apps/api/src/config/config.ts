@@ -8,38 +8,53 @@ const getIntVar = (name: string, defaultValue: number): number => {
   return parseInt(value);
 };
 
-export class Config {
-  static readonly NODE_ENV = process.env.NODE_ENV || 'development';
-  static readonly PORT = process.env.PORT || 3000;
+class Config {
+  readonly NODE_ENV: 'development' | 'production';
+  readonly PORT: number;
 
-  static readonly DB_HOST = process.env.DB_HOST || 'localhost';
-  static readonly DB_PORT = getIntVar('DB_PORT', 5432);
-  static readonly DB_USERNAME = process.env.DB_USERNAME || 'koray';
-  static readonly DB_PASSWORD = process.env.DB_PASSWORD || 'DhdtG53euTkC9hfP';
-  static readonly DB_DATABASE = process.env.DB_DATABASE || 'attendance';
+  readonly DB_HOST: string;
+  readonly DB_PORT: number;
+  readonly DB_USERNAME: string;
+  readonly DB_PASSWORD: string;
+  readonly DB_DATABASE: string;
 
-  static readonly REDIS_HOST = process.env.REDIS_HOST || 'localhost';
-  static readonly REDIS_PORT = getIntVar('REDIS_PORT', 6379);
+  readonly REDIS_HOST: string;
+  readonly REDIS_PORT: number;
 
-  static _initialize() {
-    if (process.env.NODE_ENV !== 'production') {
+  constructor() {
+    if (process.env.api_secrets) {
+      const secrets = JSON.parse(process.env.api_secrets);
+      Object.assign(process.env, secrets);
+    } else {
       console.log('Loading config from .env file.');
       dotenvConfig();
     }
 
-    if (process.env.api_secrets) {
-      const secrets = JSON.parse(process.env.api_secrets);
-      Object.assign(Config, secrets);
+    if (process.env.NODE_ENV === 'production') {
+      this.NODE_ENV = 'production';
+    } else {
+      this.NODE_ENV = 'development';
     }
+
+    this.PORT = getIntVar('PORT', 3333);
+
+    this.DB_HOST = process.env.DB_HOST || 'localhost';
+    this.DB_PORT = getIntVar('DB_PORT', 5432);
+    this.DB_USERNAME = process.env.DB_USERNAME || 'koray';
+    this.DB_PASSWORD = process.env.DB_PASSWORD || 'DhdtG53euTkC9hfP';
+    this.DB_DATABASE = process.env.DB_DATABASE || 'attendance';
+
+    this.REDIS_HOST = process.env.REDIS_HOST || 'localhost';
+    this.REDIS_PORT = getIntVar('REDIS_PORT', 6379);
   }
 
-  static get isProduction() {
-    return Config.NODE_ENV === 'production';
+  get isProduction() {
+    return this.NODE_ENV === 'production';
   }
 
-  static get isDevelopment() {
-    return Config.NODE_ENV === 'development';
+  get isDevelopment() {
+    return this.NODE_ENV === 'development';
   }
 }
 
-Config._initialize();
+export default new Config();

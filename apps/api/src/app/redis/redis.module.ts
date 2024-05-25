@@ -1,4 +1,4 @@
-import { Config } from '@api/config/config';
+import Config from '@api/config/config';
 import { FactoryProvider, Module, Provider } from '@nestjs/common';
 import { Redis, Cluster } from 'ioredis';
 
