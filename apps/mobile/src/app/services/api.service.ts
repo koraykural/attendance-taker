@@ -5,6 +5,7 @@ import { BehaviorSubject, EMPTY, from, Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { LoginDto, RegisterDto } from '@interfaces/auth';
 import { AttendedSessionListResponseItem } from '@interfaces/session';
+import { environment } from '@mobile/environments/environment';
 
 const ACCESS_TOKEN_KEY = 'my-access-token';
 
@@ -12,7 +13,7 @@ const ACCESS_TOKEN_KEY = 'my-access-token';
   providedIn: 'root',
 })
 export class ApiService {
-  baseUrl = 'https://172.20.10.2/api';
+  baseUrl = environment.apiUrl;
   isAuthenticated = new BehaviorSubject<boolean | null>(null);
   currentAccessToken: string | null = null;
   attendedCodes = new BehaviorSubject<string[]>([]);

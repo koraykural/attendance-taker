@@ -29,6 +29,12 @@
               "type": "anyComponentStyle"
             }
           ],
+          "fileReplacements": [
+            {
+              "replace": "apps/mobile/src/environments/environment.ts",
+              "with": "apps/mobile/src/environments/environment.prod.ts"
+            }
+          ],
           "outputHashing": "all"
         }
       },
@@ -86,9 +92,7 @@
       "options": {
         "disableHostCheck": true,
         "host": "172.20.10.2",
-        "port": 4201,
-        "proxyConfig": "apps/mobile/proxy.conf.json",
-        "ssl": true
+        "port": 4201
       }
     }
   }
