@@ -56,10 +56,10 @@
       "volumesFrom": []
     }
   ],
-  "cpu": "1024",
+  "cpu": "256",
   "executionRoleArn": "arn:aws:iam::574099924710:role/ecsTaskExecutionRole",
   "family": "attendence-api",
-  "memory": "2048",
+  "memory": "512",
   "networkMode": "awsvpc",
   "requiresCompatibilities": ["FARGATE"],
   "runtimePlatform": {
