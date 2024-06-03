@@ -6,7 +6,6 @@ const nonClusteredRedisFactory: FactoryProvider['useFactory'] = () => {
   const client = new Redis({
     port: Config.REDIS_PORT,
     host: Config.REDIS_HOST,
-    tls: {},
     lazyConnect: true,
   });
 
