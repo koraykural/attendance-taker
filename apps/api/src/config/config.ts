@@ -27,7 +27,7 @@ class Config {
       Object.assign(process.env, secrets);
     } else {
       console.log('Loading config from .env file.');
-      dotenvConfig();
+      dotenvConfig({ path: '.env' });
     }
 
     if (process.env.NODE_ENV === 'production') {
