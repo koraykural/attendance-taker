@@ -1,0 +1,34 @@
+config:
+  target: http://localhost:3333
+  processor: './helpers.js'
+  http:
+    timeout: 30
+  payload:
+    - path: './users.csv'
+      fields:
+        - email
+        - password
+  phases:
+    - duration: 60
+      arrivalCount: 2000
+      name: Spike phase
+  plugins:
+    ensure:
+      maxErrorRate: 0
+    expect:
+      reportFailuresAsErrors: true
+
+scenarios:
+  - flow:
+      - post:
+          url: '/auth/login'
+          json:
+            email: '{{ email }}'
+            password: '{{ password }}'
+          capture:
+            - json: '$.accessToken'
+              as: 'accessToken'
+      - post:
+          url: '/session/attend/code-eb8352cd-bb0f-4ba8-8ab1-2810ebd88c6d'
+          headers:
+            Authorization: 'Bearer {{ accessToken }}'
