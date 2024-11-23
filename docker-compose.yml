@@ -1,35 +1,20 @@
-version: '3.8'
-
 services:
   api:
-    build:
-      context: .
-      dockerfile: api.Dockerfile
+    image: 574099924710.dkr.ecr.eu-central-1.amazonaws.com/attendence-taker-api:db5758a38922bceb073ac500d5152429be34a2e1
     networks:
       - app-network
     depends_on:
       - postgres
       - redis
-    environment:
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_USERNAME: your_postgres_user
-      DB_PASSWORD: your_postgres_password
-      DB_DATABASE: your_postgres_db
+    env_file: .env
 
   desktop:
-    build:
-      context: .
-      dockerfile: desktop.Dockerfile
+    image: 574099924710.dkr.ecr.eu-central-1.amazonaws.com/attendence-taker-desktop:db5758a38922bceb073ac500d5152429be34a2e1
     networks:
       - app-network
 
   mobile:
-    build:
-      context: .
-      dockerfile: mobile.Dockerfile
+    image: 574099924710.dkr.ecr.eu-central-1.amazonaws.com/attendence-taker-mobile:db5758a38922bceb073ac500d5152429be34a2e1
     networks:
       - app-network
 
@@ -48,10 +33,9 @@ services:
 
   postgres:
     image: postgres:13
-    environment:
-      POSTGRES_USER: your_postgres_user
-      POSTGRES_PASSWORD: your_postgres_password
-      POSTGRES_DB: your_postgres_db
+    env_file: .env
+    ports:
+      - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
@@ -61,6 +45,8 @@ services:
     image: redis:latest
     networks:
       - app-network
+    volumes:
+      - redis_data:/data
 
 networks:
   app-network:
@@ -68,3 +54,4 @@ networks:
 
 volumes:
   postgres_data:
+  redis_data:
