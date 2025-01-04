@@ -1,7 +1,7 @@
-<ng-container *ngIf="attendenceCode$ | async; let attendenceCode; else: loadingCode">
+<ng-container *ngIf="attendanceCode$ | async; let attendanceCode; else: loadingCode">
   <qrcode
-    *ngIf="attendenceCode"
-    [qrdata]="attendenceCode"
+    *ngIf="attendanceCode"
+    [qrdata]="attendanceCode"
     [elementType]="'img'"
     [errorCorrectionLevel]="'M'"
     [width]="600"

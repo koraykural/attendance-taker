@@ -1,6 +1,6 @@
 services:
   api:
-    image: 574099924710.dkr.ecr.eu-central-1.amazonaws.com/attendence-taker-api:latest
+    image: 574099924710.dkr.ecr.eu-central-1.amazonaws.com/attendance-taker-api:latest
     networks:
       - app-network
     depends_on:
@@ -9,12 +9,12 @@ services:
     env_file: .env
 
   desktop:
-    image: 574099924710.dkr.ecr.eu-central-1.amazonaws.com/attendence-taker-desktop:latest
+    image: 574099924710.dkr.ecr.eu-central-1.amazonaws.com/attendance-taker-desktop:latest
     networks:
       - app-network
 
   mobile:
-    image: 574099924710.dkr.ecr.eu-central-1.amazonaws.com/attendence-taker-mobile:latest
+    image: 574099924710.dkr.ecr.eu-central-1.amazonaws.com/attendance-taker-mobile:latest
     networks:
       - app-network
 

@@ -25,8 +25,8 @@ import { Socket } from 'ngx-socket-io';
 export class SessionService {
   session$ = new BehaviorSubject<SessionDetails | null>(null);
   loadingSession$ = new BehaviorSubject<boolean>(false);
-  attendenceCode$ = new BehaviorSubject<string | null>(null);
-  attendenceCodeSub: Subscription | null = null;
+  attendanceCode$ = new BehaviorSubject<string | null>(null);
+  attendanceCodeSub: Subscription | null = null;
 
   get sessionId() {
     return this.session$.value?.id;
@@ -130,11 +130,11 @@ export class SessionService {
       return;
     }
 
-    if (this.attendenceCodeSub) {
+    if (this.attendanceCodeSub) {
       this.stopListeningForCodes();
     }
 
-    this.attendenceCodeSub = combineLatest([
+    this.attendanceCodeSub = combineLatest([
       this.socket.fromEvent<AttendanceCodeStreamData>('session'),
       this.session$,
       this.loadingSession$,
@@ -148,9 +148,9 @@ export class SessionService {
       )
       .subscribe((code) => {
         if (code) {
-          this.attendenceCode$.next(code);
+          this.attendanceCode$.next(code);
         } else {
-          this.attendenceCode$.next(null);
+          this.attendanceCode$.next(null);
           this.refreshSession();
         }
       });
@@ -160,10 +160,10 @@ export class SessionService {
   }
 
   stopListeningForCodes() {
-    if (this.attendenceCodeSub) {
-      this.attendenceCodeSub.unsubscribe();
+    if (this.attendanceCodeSub) {
+      this.attendanceCodeSub.unsubscribe();
       this.socket.disconnect();
-      this.attendenceCode$.next(null);
+      this.attendanceCode$.next(null);
     }
   }
 }

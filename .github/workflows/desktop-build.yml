@@ -23,7 +23,7 @@ jobs:
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: attendence-taker-desktop
+          ECR_REPOSITORY: attendance-taker-desktop
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build . -f desktop.Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" -t "$ECR_REGISTRY/$ECR_REPOSITORY:latest"
@@ -42,5 +42,5 @@ jobs:
       #   with:
       #     task-definition: ${{ steps.task-def.outputs.task-definition }}
       #     service: desktop
-      #     cluster: attendence
+      #     cluster: attendance
       #     wait-for-service-stability: true

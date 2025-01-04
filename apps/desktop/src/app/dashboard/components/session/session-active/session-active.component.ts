@@ -13,7 +13,7 @@ export class SessionActiveComponent {
 
   @Output() refresh = new EventEmitter<undefined>();
 
-  attendenceCode$ = this.sessionService.attendenceCode$;
+  attendanceCode$ = this.sessionService.attendanceCode$;
 
   constructor(private readonly sessionService: SessionService) {}
 

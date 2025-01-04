@@ -4,12 +4,12 @@
       "cpu": 0,
       "environment": [],
       "essential": true,
-      "image": "574099924710.dkr.ecr.eu-central-1.amazonaws.com/attendence-taker-mobile:4b7810ced6bf42dcc490cd77beb76f32ecec29b1",
+      "image": "574099924710.dkr.ecr.eu-central-1.amazonaws.com/attendance-taker-mobile:4b7810ced6bf42dcc490cd77beb76f32ecec29b1",
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
           "awslogs-create-group": "true",
-          "awslogs-group": "/ecs/attendence-mobile",
+          "awslogs-group": "/ecs/attendance-mobile",
           "awslogs-region": "eu-central-1",
           "awslogs-stream-prefix": "ecs"
         }
@@ -53,7 +53,7 @@
   ],
   "cpu": "256",
   "executionRoleArn": "arn:aws:iam::574099924710:role/ecsTaskExecutionRole",
-  "family": "attendence-mobile",
+  "family": "attendance-mobile",
   "memory": "512",
   "networkMode": "awsvpc",
   "requiresCompatibilities": ["FARGATE"],
