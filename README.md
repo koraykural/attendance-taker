@@ -1,4 +1,4 @@
-# Attandance Checker
+# Attendance Taker
 
 ## Migrations
 

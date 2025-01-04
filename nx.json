@@ -27,7 +27,7 @@
     ],
     "sharedGlobals": []
   },
-  "npmScope": "attendance-checker",
+  "npmScope": "attendance-taker",
   "targetDefaults": {
     "build": {
       "dependsOn": ["^build"],

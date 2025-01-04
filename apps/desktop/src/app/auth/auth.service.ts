@@ -9,7 +9,7 @@ import { BehaviorSubject, map, Observable } from 'rxjs';
 })
 export class AuthService {
   private readonly accessToken$: BehaviorSubject<string | null>;
-  private readonly accessTokenKey = 'ATTANDANCE_ACCESS_TOKEN';
+  private readonly accessTokenKey = 'ATTENDANCE_ACCESS_TOKEN';
   isLoggedIn$: Observable<boolean>;
 
   constructor(private readonly http: ApiService, private readonly router: Router) {
